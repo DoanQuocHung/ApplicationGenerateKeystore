@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Parameters;
+using Org.BouncyCastle.Math;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +13,25 @@ namespace TokenService
 {
     internal class ManageAlgorithm
     {     
+
+        public  string EncryptPrivateKey(AsymmetricCipherKeyPair key)
+        {
+            if(key == null)
+                return null;
+            var a = (RsaKeyParameters)key.Public;
+            BigInteger modulus = a.Modulus;            
+            BigInteger exponent = a.Exponent;
+            string result = modulus.ToString() +";" + exponent.ToString();
+            //Console.WriteLine("resultPublic:" + result);
+
+            var b = (RsaKeyParameters)key.Private;
+            BigInteger modulus2 = b.Modulus;
+            BigInteger exponent2 = b.Exponent;
+            string result2 = modulus2.ToString() + ";" + exponent2.ToString();
+            //Console.WriteLine("resultPrivate:" + result2);
+
+            return this.EncryptPrivateKey(result, result2);
+        }
         public  string EncryptPrivateKey(string publickey, string plainText)
         {
             string key = this.HashKey(publickey);
@@ -41,6 +63,16 @@ namespace TokenService
             return Convert.ToBase64String(array);
         }
 
+        public string DecryptPrivateKey(AsymmetricKeyParameter keyPublic, string cipherText)
+        {
+            var a = (RsaKeyParameters)keyPublic;
+            BigInteger modulus = a.Modulus;
+            BigInteger exponent = a.Exponent;
+            string result = modulus.ToString() + ";" + exponent.ToString();
+            //Console.WriteLine("resultPublic:" + result);
+
+            return this.DecryptPrivateKey(result, cipherText);
+        }
         public  string DecryptPrivateKey(string publickey, string cipherText)
         {
             string key = this.HashKey(publickey);
