@@ -38,7 +38,7 @@ namespace TokenService
             //Console.WriteLine("Input:" + input);
             //Console.WriteLine("Encrypt:" + encrypt);
             //Console.WriteLine("Decrypt:" + decrypt);
-
+             
 
             Console.WriteLine("\n===== Generate PKCS12 Keystore Successfully ! =====");
             GenerateP12 generateP12 = new GenerateP12();
