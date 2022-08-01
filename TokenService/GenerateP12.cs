@@ -14,6 +14,8 @@ namespace TokenService
         public void generateP12()
         {
             Pkcs12Store pkcs12Store = new Pkcs12Store();
+            AsymmetricKeyEntry entry = new AsymmetricKeyEntry();
+
             string keyAlias = null;
 
             foreach (string name in pkcs12Store.Aliases)
@@ -25,20 +27,7 @@ namespace TokenService
                 }
             }
 
-            //AsymmetricKeyParameter key = pkcs12Store.GetKey(keyAlias).Key;
-            //X509CertificateEntry[] ce = pkcs12Store.GetCertificateChain(keyAlias);
-            //List<X509Certificate> chain = new List<X509Certificate>(ce.Length);
-            //foreach (var c in ce)
-            //{
-            //    chain.Add(c.Certificate);
-            //}
 
-            //stamper = new Stamper()
-            //{
-            //    CertChain = chain,
-            //    PrivateKey = key,
-            //    Stamp = iTextSharp.text.Image.GetInstance(stampImage)
-            //};
 
 
         }

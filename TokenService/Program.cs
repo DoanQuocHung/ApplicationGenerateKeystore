@@ -14,6 +14,7 @@ namespace TokenService
             ManageKey generateKeypair = new ManageKey();
             string subjectDN = generateKeypair.createInformation();
             generateKeypair.generateKey(2048);
+            //generateKeypair.getPrivateKey();
             string CSR = generateKeypair.generateCSR(subjectDN, null);
             Console.WriteLine("Generated CSR Successfully !");
 

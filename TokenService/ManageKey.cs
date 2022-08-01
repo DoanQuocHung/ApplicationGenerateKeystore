@@ -42,7 +42,7 @@ namespace TokenService
             String S = "TPHCM";             //State
             String C = "VN";                //Country
             //String P = "PrivateKey";
-            String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S ;
+            String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S;
             return result;
         }
 
@@ -57,6 +57,32 @@ namespace TokenService
             var keyPairGenerator = new RsaKeyPairGenerator();
             keyPairGenerator.Init(keyGenerationParameters);
             key = keyPairGenerator.GenerateKeyPair();
+
+
+            //Ghi vao file - tương lai sẽ bỏ :v
+            StringBuilder CSRPem = new StringBuilder();
+            PemWriter CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
+            CSRPemWriter.WriteObject(key.Public);
+            CSRPemWriter.Writer.Flush();
+
+            string CSRtext = CSRPem.ToString();
+
+            using (StreamWriter f = new StreamWriter(@"file/public.pem"))  //txt
+            {
+                f.Write(CSRtext);
+            }
+
+            CSRPem = new StringBuilder();
+            CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
+            CSRPemWriter.WriteObject(key.Private);
+            CSRPemWriter.Writer.Flush();
+
+            CSRtext = CSRPem.ToString();
+
+            using (StreamWriter f = new StreamWriter(@"file/private.pem"))  //txt
+            {
+                f.Write(CSRtext);
+            }
         }
 
         public string generateCSR(String subjectDN, String algorithm)
@@ -77,7 +103,7 @@ namespace TokenService
 
             string CSRtext = CSRPem.ToString();
 
-            using (StreamWriter f = new StreamWriter(@"file/resultCSR.txt"))
+            using (StreamWriter f = new StreamWriter(@"file/result.txt"))  //txt
             {
                 f.Write(CSRtext);
             }
@@ -98,13 +124,16 @@ namespace TokenService
             AsymmetricKeyParameter privateKey = key.Private;
 
 
-
         }
 
-        //Get from excel file
-        private void getPrivateKey(String cipher)
+        public AsymmetricKeyParameter getPrivateKey()
         {
+            return this.key.Private;
+        }
 
+        public AsymmetricKeyParameter getPublicKey()
+        {
+            return this.key.Public;
         }
     }
 }

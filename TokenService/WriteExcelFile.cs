@@ -14,10 +14,14 @@ namespace TokenService
         public void ExportExcel(string csr)
         {
             IWorkbook workbook = new XSSFWorkbook();
-            ISheet sheet1 = workbook.CreateSheet("Sheet1");
+            ISheet sheet1 = workbook.CreateSheet("ToolResult");
+            sheet1.SetColumnWidth(0, 1000);
+            sheet1.SetColumnWidth(1, 12000);
+            sheet1.SetColumnWidth(2, 12000);
+            sheet1.SetColumnWidth(3, 12000);
+            sheet1.SetColumnWidth(4, 8000);
 
             IRow row1 = sheet1.CreateRow(0);
-            sheet1.SetColumnWidth(1,10000);
             row1.CreateCell(0).SetCellValue("STT");
             row1.CreateCell(1).SetCellValue("Csr");
             row1.CreateCell(2).SetCellValue("Certificate");
@@ -35,12 +39,6 @@ namespace TokenService
                 row2.CreateCell(3).SetCellValue("");
                 row2.CreateCell(4).SetCellValue("");
             }
-
-            //IRow row2 = sheet1.CreateRow(1);
-            //row2.CreateCell(0).SetCellValue("1");
-            //row2.CreateCell(1).SetCellValue("20");
-            //row2.CreateCell(2).SetCellValue("xyz");
-            //row2.CreateCell(3).SetCellValue("xyz");
 
             FileStream sw = File.Create("file/ExportExcelCSR.xlsx");
             workbook.Write(sw);
