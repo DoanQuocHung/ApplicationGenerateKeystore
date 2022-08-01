@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.X509;
+﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,16 +20,23 @@ namespace TokenService
             string CSR = generateKeypair.generateCSR(subjectDN, null);
             Console.WriteLine("Generated CSR Successfully !");
 
-            Console.WriteLine("\n===== Export Excel File =====");
-            WriteExcelFile writeExcelFile = new WriteExcelFile();
-            //Cipher privateKey
-            //ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
-            //string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
-            writeExcelFile.ExportExcel(CSR,null);
-            Console.WriteLine("Export Excel Successfully !");
+            //Test en - decrypt private key
+            ManageAlgorithm a = new ManageAlgorithm();
+            string result = a.EncryptPrivateKey(generateKeypair.getKey());
+            Console.WriteLine("Encrypt:"+result);
+            string privatekey = a.DecryptPrivateKey(generateKeypair.getPublicKey(), result);
+            Console.WriteLine("\nPrivatekey:"+privatekey);
+
+            //Console.WriteLine("\n===== Export Excel File =====");
+            //WriteExcelFile writeExcelFile = new WriteExcelFile();
+            ////Cipher privateKey
+            ////ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
+            ////string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
+            //writeExcelFile.ExportExcel(CSR,null);
+            //Console.WriteLine("Export Excel Successfully !");
 
             //String path = @"C:\Users\gia\Desktop\cert.cer";
-            //X509Certificate certificate = Utils.readCertificate(path);
+            //X509Certificate certificate = Utils.readCertificate(path);            
             //Console.WriteLine("SubjectDN"+certificate.SubjectDN);
             //String base64 = Utils.convertCertToBase64(certificate);
             //Console.WriteLine("Base64:"+base64);
@@ -41,13 +49,13 @@ namespace TokenService
             //Console.WriteLine("Input:" + input);
             //Console.WriteLine("Encrypt:" + encrypt);
             //Console.WriteLine("Decrypt:" + decrypt);
-             
 
-            Console.WriteLine("\n===== Generate PKCS12 Keystore Successfully ! =====");
-            GenerateP12 generateP12 = new GenerateP12();
 
-            X509Certificate endEntityCert = Utils.readCertificateFromFile("file/certificate.cer");
-            generateP12.pkcs12Keystore(endEntityCert, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
+            //Console.WriteLine("\n===== Generate PKCS12 Keystore Successfully ! =====");
+            //GenerateP12 generateP12 = new GenerateP12();
+
+            //X509Certificate endEntityCert = Utils.readCertificateFromFile("file/certificate.cer");
+            //generateP12.pkcs12Keystore(endEntityCert, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
 
         }
     }
