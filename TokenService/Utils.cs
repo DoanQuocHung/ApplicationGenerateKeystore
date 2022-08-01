@@ -9,13 +9,42 @@ using System.Threading.Tasks;
 namespace TokenService
 {
     class Utils
-    {
-    
+    {        
+        public static Boolean CheckExtensionPEM(String pathFile)
+        {          
+           String q = File.ReadAllText(pathFile, Encoding.UTF8);
+           if( q.Contains("BEGIN") || q.Contains("END") || q.Contains("begin") || q.Contains("end"))
+            {
+                return true;
+            }
+            return false;                    
+        }
         public static X509Certificate readCertificateFromFile(String pathFile)
         {
+            if(CheckExtensionPEM(pathFile))
+            {
+                string base64 = readCertificateFromPemFile(pathFile);
+                return convertBase64ToCert(base64);
+            }    
             byte[] bytes = File.ReadAllBytes(pathFile);
             X509Certificate certificate = new X509Certificate(bytes);
             return certificate;
+        }
+
+        private static string readCertificateFromPemFile(String pathFile)
+        {
+            String[] q = File.ReadAllLines(pathFile);
+            int count = 1;
+            String base64 = "";
+            while(true)
+            {
+                if (count == q.Length - 2)
+                    break;
+                base64 += q[count];
+                count++;
+                
+            }    
+            return base64;
         }
 
         public static String convertCertToBase64(X509Certificate certificate)
