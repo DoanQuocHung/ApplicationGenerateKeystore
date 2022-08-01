@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.X509;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,12 @@ namespace TokenService
             //Console.WriteLine("Encrypt:" + encrypt);
             //Console.WriteLine("Decrypt:" + decrypt);
 
+
+            Console.WriteLine("\n===== Generate PKCS12 Keystore Successfully ! =====");
+            GenerateP12 generateP12 = new GenerateP12();
+
+            X509Certificate endEntityCert = Utils.readCertificateFromFile("file/certificate.cer");
+            generateP12.pkcs12Keystore(endEntityCert, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
 
         }
     }

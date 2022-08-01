@@ -1,9 +1,12 @@
 ﻿using Org.BouncyCastle.Crypto;
+using Org.BouncyCastle.Crypto.Prng;
 using Org.BouncyCastle.Pkcs;
+using Org.BouncyCastle.Security;
+using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,24 +14,30 @@ namespace TokenService
 {
     class GenerateP12
     {
-        public void generateP12()
+        public void pkcs12Keystore (X509Certificate newCert, AsymmetricCipherKeyPair kp, string FilePath, string CertAlias, string Password)
         {
-            Pkcs12Store pkcs12Store = new Pkcs12Store();
-            //AsymmetricKeyEntry entry = new AsymmetricKeyEntry();
-            
-            
-            string keyAlias = null;
+            var newStore = new Pkcs12Store();
+            var certEntry = new X509CertificateEntry(newCert);
 
-            foreach (string name in pkcs12Store.Aliases)
+            newStore.SetCertificateEntry(
+                CertAlias,
+                certEntry
+                );
+
+            newStore.SetKeyEntry(
+                CertAlias,
+                new AsymmetricKeyEntry(kp.Private),
+                new[] { certEntry }
+                );
+
+            using (var certFile = File.Create(FilePath))
             {
-                if (pkcs12Store.IsKeyEntry(name))
-                {
-                    keyAlias = name;
-                    break;
-                }
+                newStore.Save(
+                    certFile,
+                    Password.ToCharArray(),
+                    new SecureRandom(new CryptoApiRandomGenerator())
+                    );
             }
-
-
 
 
         }
