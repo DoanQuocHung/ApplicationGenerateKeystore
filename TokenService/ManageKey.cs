@@ -41,8 +41,8 @@ namespace TokenService
             String L = "Quan 1";            //Location
             String S = "TPHCM";             //State
             String C = "VN";                //Country
-            String P = "PrivateKey";
-            String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S + ",P=" + P;
+            //String P = "PrivateKey";
+            String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S ;
             return result;
         }
 
@@ -77,7 +77,7 @@ namespace TokenService
 
             string CSRtext = CSRPem.ToString();
 
-            using (StreamWriter f = new StreamWriter(@"file/result.txt"))  //txt
+            using (StreamWriter f = new StreamWriter(@"file/resultCSR.txt"))
             {
                 f.Write(CSRtext);
             }

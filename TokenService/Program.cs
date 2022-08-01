@@ -10,12 +10,12 @@ namespace TokenService
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
-            //ManagerKey generateKeypair = new ManagerKey();
-            //string subjectDN = generateKeypair.createInformation();
-            //generateKeypair.generateKey(2048);
-            //string CSR = generateKeypair.generateCSR(subjectDN, null);
-            //Console.WriteLine("Generated CSR Successfully !");
+            Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
+            ManageKey generateKeypair = new ManageKey();
+            string subjectDN = generateKeypair.createInformation();
+            generateKeypair.generateKey(2048);
+            string CSR = generateKeypair.generateCSR(subjectDN, null);
+            Console.WriteLine("Generated CSR Successfully !");
 
             //Console.WriteLine("===== Export Excel File =====");
             //WriteExcelFile writeExcelFile = new WriteExcelFile();
@@ -26,15 +26,17 @@ namespace TokenService
             //Console.WriteLine("SubjectDN"+certificate.SubjectDN);
             //String base64 = Utils.convertCertToBase64(certificate);
             //Console.WriteLine("Base64:"+base64);
-            ManageAlgorithm algorithm = new ManageAlgorithm();
-            String input = "Tat Khanh Giaajlwdh kagoqje lkqhjkdcndHQOIW Dadm nUQIYHD HJKASNK ioqw d";
-            String key2 = "alo mot hai ba basddasdn nam sau bay tam chin muoiw";
+            //ManageAlgorithm algorithm = new ManageAlgorithm();
+            //String input = "Tat Khanh Giaajlwdh kagoqje lkqhjkdcndHQOIW Dadm nUQIYHD HJKASNK ioqw d";
+            //String key2 = "alo mot hai ba basddasdn nam sau bay tam chin muoiw";
 
-            String encrypt = algorithm.EncryptString(key2, input);
-            String decrypt = algorithm.DecryptString(key2, encrypt);
-            Console.WriteLine("Input:" + input);
-            Console.WriteLine("Encrypt:" + encrypt);
-            Console.WriteLine("Decrypt:" + decrypt);
+            //String encrypt = algorithm.EncryptString(key2, input);
+            //String decrypt = algorithm.DecryptString(key2, encrypt);
+            //Console.WriteLine("Input:" + input);
+            //Console.WriteLine("Encrypt:" + encrypt);
+            //Console.WriteLine("Decrypt:" + decrypt);
+
+
         }
     }
 }
