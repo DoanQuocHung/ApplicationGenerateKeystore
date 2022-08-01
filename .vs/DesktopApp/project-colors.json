@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "2d45d911-a124-45e5-b1d9-8fa8bb276714": {
+      "ProjectGuid": "2d45d911-a124-45e5-b1d9-8fa8bb276714",
+      "DisplayName": "DesktopApp",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

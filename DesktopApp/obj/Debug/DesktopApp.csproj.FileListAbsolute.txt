@@ -1,0 +1,15 @@
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\DesktopApp.exe.config
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\DesktopApp.exe
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\DesktopApp.pdb
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\TokenService.exe
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\TokenService.pdb
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\bin\Debug\TokenService.exe.config
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.csproj.AssemblyReference.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.csproj.SuggestedBindingRedirects.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApplication.MainDemo.resources
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.Properties.Resources.resources
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.csproj.GenerateResource.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.csproj.CoreCompileInputs.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.csproj.CopyComplete
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.exe
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\DesktopApp\obj\Debug\DesktopApp.pdb

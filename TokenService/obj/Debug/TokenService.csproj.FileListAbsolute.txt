@@ -1,0 +1,8 @@
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\bin\Debug\TokenService.exe.config
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\bin\Debug\TokenService.exe
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\bin\Debug\TokenService.pdb
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\obj\Debug\TokenService.csproj.AssemblyReference.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\obj\Debug\TokenService.csproj.SuggestedBindingRedirects.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\obj\Debug\TokenService.csproj.CoreCompileInputs.cache
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\obj\Debug\TokenService.exe
+D:\MOBILE ID\HoTroKH_TichHopRSSP\DesktopApplicationTool\DesktopApp\TokenService\obj\Debug\TokenService.pdb
