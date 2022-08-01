@@ -11,43 +11,33 @@ namespace TokenService
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
             ManageKey generateKeypair = new ManageKey();
-            string subjectDN = generateKeypair.createInformation();
-            generateKeypair.generateKey(2048);
-            //generateKeypair.getPrivateKey();
-            string CSR = generateKeypair.generateCSR(subjectDN, null);
-            Console.WriteLine("Generated CSR Successfully !");
 
-            Console.WriteLine("\n===== Export Excel File =====");
-            WriteExcelFile writeExcelFile = new WriteExcelFile();
-            //Cipher privateKey
-            //ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
-            //string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
-            writeExcelFile.ExportExcel(CSR,null);
-            Console.WriteLine("Export Excel Successfully !");
+            //Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
+            //string subjectDN = generateKeypair.createInformation();
+            //generateKeypair.generateKey(2048);
+            ////generateKeypair.getPrivateKey();
+            //string CSR = generateKeypair.generateCSR(subjectDN, null);
+            //Console.WriteLine("Generated CSR Successfully !");
 
-            //String path = @"C:\Users\gia\Desktop\cert.cer";
-            //X509Certificate certificate = Utils.readCertificate(path);
-            //Console.WriteLine("SubjectDN"+certificate.SubjectDN);
-            //String base64 = Utils.convertCertToBase64(certificate);
-            //Console.WriteLine("Base64:"+base64);
-            //ManageAlgorithm algorithm = new ManageAlgorithm();
-            //String input = "Tat Khanh Giaajlwdh kagoqje lkqhjkdcndHQOIW Dadm nUQIYHD HJKASNK ioqw d";
-            //String key2 = "alo mot hai ba basddasdn nam sau bay tam chin muoiw";
 
-            //String encrypt = algorithm.EncryptString(key2, input);
-            //String decrypt = algorithm.DecryptString(key2, encrypt);
-            //Console.WriteLine("Input:" + input);
-            //Console.WriteLine("Encrypt:" + encrypt);
-            //Console.WriteLine("Decrypt:" + decrypt);
-             
+            //Console.WriteLine("\n===== Export Excel File =====");
+            //WriteExcelFile writeExcelFile = new WriteExcelFile();
+            ////Cipher privateKey
+            ////ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
+            ////string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
+            //writeExcelFile.ExportExcel(CSR,null);
+            //Console.WriteLine("Export Excel Successfully !");
+            
 
-            Console.WriteLine("\n===== Generate PKCS12 Keystore Successfully ! =====");
+            Console.WriteLine("\n===== Generate PKCS12 Keystore =====");
             GenerateP12 generateP12 = new GenerateP12();
 
-            X509Certificate endEntityCert = Utils.readCertificateFromFile("file/certificate.cer");
-            generateP12.pkcs12Keystore(endEntityCert, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
+            X509Certificate endEntityCert = Utils.readCertificateFromFile("file/cert.cer");
+            X509Certificate certChain = Utils.readCertificateFromFile("file/certChain.cer");
+
+            generateP12.pkcs12Keystore(endEntityCert, certChain, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
+            Console.WriteLine("Generate PKCS12 Keystore Successfully !");
 
         }
     }

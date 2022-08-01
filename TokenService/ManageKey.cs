@@ -35,7 +35,7 @@ namespace TokenService
 
         public String createInformation()
         {
-            String CN = "Nguyen Van A";     //Common Name - Domain name
+            String CN = "Nguyen Van B";     //Common Name - Domain name
             String OU = "Cong Ty ABC";      //Organizational Unit Name
             String O = "Cong Ty ABC";       //Organization Name
             String L = "Quan 1";            //Location
@@ -103,7 +103,7 @@ namespace TokenService
 
             string CSRtext = CSRPem.ToString();
 
-            using (StreamWriter f = new StreamWriter(@"file/result.txt"))  //txt
+            using (StreamWriter f = new StreamWriter(@"file/resultCSR.txt"))  //txt
             {
                 f.Write(CSRtext);
             }

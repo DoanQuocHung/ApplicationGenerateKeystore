@@ -14,10 +14,11 @@ namespace TokenService
 {
     class GenerateP12
     {
-        public void pkcs12Keystore (X509Certificate newCert, AsymmetricCipherKeyPair kp, string FilePath, string CertAlias, string Password)
+        public void pkcs12Keystore (X509Certificate newCert, X509Certificate CertChain, AsymmetricCipherKeyPair kp, string FilePath, string CertAlias, string Password)
         {
             var newStore = new Pkcs12Store();
             var certEntry = new X509CertificateEntry(newCert);
+            var certChain = new X509CertificateEntry(CertChain);
 
             newStore.SetCertificateEntry(
                 CertAlias,
@@ -27,7 +28,7 @@ namespace TokenService
             newStore.SetKeyEntry(
                 CertAlias,
                 new AsymmetricKeyEntry(kp.Private),
-                new[] { certEntry }
+                new[] { certChain, certEntry }
                 );
 
             using (var certFile = File.Create(FilePath))
