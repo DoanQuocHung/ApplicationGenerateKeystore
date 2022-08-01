@@ -12,7 +12,7 @@ namespace TokenService
     {
         private string path = @"file\temp.tmp";
 
-        public string EncryptString(string publickey, string plainText)
+        public string EncryptPrivateKey(string publickey, string plainText)
         {
             string key = this.HashKey(publickey);
             Console.WriteLine("Key:" + key);
@@ -43,7 +43,7 @@ namespace TokenService
             return Convert.ToBase64String(array);
         }
 
-        public string DecryptString(string publickey, string cipherText)
+        public string DecryptPrivateKey(string publickey, string cipherText)
         {
             string key = this.HashKey(publickey);
             byte[] iv = new byte[16];
