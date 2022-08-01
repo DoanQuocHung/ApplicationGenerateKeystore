@@ -11,7 +11,7 @@ namespace TokenService
 {
     class WriteExcelFile
     {
-        public void ExportExcel(string csr)
+        public void ExportExcel(string csr,string cipher)
         {
             IWorkbook workbook = new XSSFWorkbook();
             ISheet sheet1 = workbook.CreateSheet("ToolResult");
@@ -26,7 +26,7 @@ namespace TokenService
             row1.CreateCell(1).SetCellValue("Csr");
             row1.CreateCell(2).SetCellValue("Certificate");
             row1.CreateCell(3).SetCellValue("Cert Chain");
-            row1.CreateCell(4).SetCellValue("Cipher Hash");
+            row1.CreateCell(4).SetCellValue("Cipher");
 
             //Số lượng CSR cần sinh
             int num = 4;
@@ -37,7 +37,7 @@ namespace TokenService
                 row2.CreateCell(1).SetCellValue("" + csr + "");     //SetCellValue("\"" + csr + "\"")
                 row2.CreateCell(2).SetCellValue("");
                 row2.CreateCell(3).SetCellValue("");
-                row2.CreateCell(4).SetCellValue("");
+                row2.CreateCell(4).SetCellValue(cipher);
             }
 
             FileStream sw = File.Create("file/ExportExcelCSR.xlsx");

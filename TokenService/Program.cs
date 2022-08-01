@@ -21,7 +21,10 @@ namespace TokenService
 
             Console.WriteLine("\n===== Export Excel File =====");
             WriteExcelFile writeExcelFile = new WriteExcelFile();
-            writeExcelFile.ExportExcel(CSR);
+            //Cipher privateKey
+            //ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
+            //string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
+            writeExcelFile.ExportExcel(CSR,null);
             Console.WriteLine("Export Excel Successfully !");
 
             //String path = @"C:\Users\gia\Desktop\cert.cer";

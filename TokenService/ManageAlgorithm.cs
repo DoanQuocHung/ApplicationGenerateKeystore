@@ -9,10 +9,8 @@ using System.Threading.Tasks;
 namespace TokenService
 {
     internal class ManageAlgorithm
-    {
-        private string path = @"file\temp.tmp";
-
-        public string EncryptPrivateKey(string publickey, string plainText)
+    {     
+        public  string EncryptPrivateKey(string publickey, string plainText)
         {
             string key = this.HashKey(publickey);
             Console.WriteLine("Key:" + key);
@@ -43,7 +41,7 @@ namespace TokenService
             return Convert.ToBase64String(array);
         }
 
-        public string DecryptPrivateKey(string publickey, string cipherText)
+        public  string DecryptPrivateKey(string publickey, string cipherText)
         {
             string key = this.HashKey(publickey);
             byte[] iv = new byte[16];
@@ -68,7 +66,7 @@ namespace TokenService
             }
         }
 
-        private string HashKey(String publickey)
+        private  string HashKey(String publickey)
         {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
             {
