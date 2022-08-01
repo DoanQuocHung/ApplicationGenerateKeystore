@@ -12,7 +12,6 @@ namespace TokenService
     {
         private string path = @"file\temp.tmp";
 
-
         public string EncryptString(string publickey, string plainText)
         {
             string key = this.HashKey(publickey);

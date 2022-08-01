@@ -17,10 +17,12 @@ namespace TokenService
             ISheet sheet1 = workbook.CreateSheet("Sheet1");
 
             IRow row1 = sheet1.CreateRow(0);
+            sheet1.SetColumnWidth(1,10000);
             row1.CreateCell(0).SetCellValue("STT");
             row1.CreateCell(1).SetCellValue("Csr");
             row1.CreateCell(2).SetCellValue("Certificate");
             row1.CreateCell(3).SetCellValue("Cert Chain");
+            row1.CreateCell(4).SetCellValue("Cipher Hash");
 
             //Số lượng CSR cần sinh
             int num = 4;
@@ -28,9 +30,10 @@ namespace TokenService
             {
                 IRow row2 = sheet1.CreateRow(i);
                 row2.CreateCell(0).SetCellValue(i);
-                row2.CreateCell(1).SetCellValue("\"" + csr + "\"");
+                row2.CreateCell(1).SetCellValue("" + csr + "");     //SetCellValue("\"" + csr + "\"")
                 row2.CreateCell(2).SetCellValue("");
                 row2.CreateCell(3).SetCellValue("");
+                row2.CreateCell(4).SetCellValue("");
             }
 
             //IRow row2 = sheet1.CreateRow(1);

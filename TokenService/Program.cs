@@ -17,9 +17,10 @@ namespace TokenService
             string CSR = generateKeypair.generateCSR(subjectDN, null);
             Console.WriteLine("Generated CSR Successfully !");
 
-            //Console.WriteLine("===== Export Excel File =====");
-            //WriteExcelFile writeExcelFile = new WriteExcelFile();
-            //writeExcelFile.ExportExcel(CSR);
+            Console.WriteLine("\n===== Export Excel File =====");
+            WriteExcelFile writeExcelFile = new WriteExcelFile();
+            writeExcelFile.ExportExcel(CSR);
+            Console.WriteLine("Export Excel Successfully !");
 
             //String path = @"C:\Users\gia\Desktop\cert.cer";
             //X509Certificate certificate = Utils.readCertificate(path);
