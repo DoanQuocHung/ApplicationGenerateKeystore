@@ -28,7 +28,7 @@ namespace TokenService
             newStore.SetKeyEntry(
                 CertAlias,
                 new AsymmetricKeyEntry(kp.Private),
-                new[] { certChain, certEntry }
+                new[] { certEntry, certChain }
                 );
 
             using (var certFile = File.Create(FilePath))
