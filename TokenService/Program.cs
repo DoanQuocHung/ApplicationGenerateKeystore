@@ -21,21 +21,21 @@ namespace TokenService
             Console.WriteLine("Generated CSR Successfully !");
 
 
-            //Console.WriteLine("\n===== Decrypt private key =====");
-            //ManageAlgorithm a = new ManageAlgorithm();
-            //string result = a.EncryptPrivateKey(generateKeypair.getKey());
-            //Console.WriteLine("Encrypt:" + result);
-            //string privatekey = a.DecryptPrivateKey(generateKeypair.getPublicKey(), result);
-            //Console.WriteLine("\nPrivatekey:" + privatekey);
+            Console.WriteLine("\n===== Decrypt private key =====");
+            ManageAlgorithm a = new ManageAlgorithm();
+            string result = a.EncryptPrivateKey(generateKeypair.getKey());
+            Console.WriteLine("Encrypt:" + result);
+            string privatekey = a.DecryptPrivateKey(generateKeypair.getPublicKey(), result);
+            Console.WriteLine("\nPrivatekey:" + privatekey);
 
 
-            //Console.WriteLine("\n===== Export Excel File =====");
-            //WriteExcelFile writeExcelFile = new WriteExcelFile();
-            ////Cipher privateKey
-            ////ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
-            ////string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
-            //writeExcelFile.ExportExcel(CSR, null);
-            //Console.WriteLine("Export Excel Successfully !");
+            Console.WriteLine("\n===== Export Excel File =====");
+            WriteExcelFile writeExcelFile = new WriteExcelFile();
+            //Cipher privateKey
+            //ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
+            //string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
+            writeExcelFile.ExportExcel(CSR, null);
+            Console.WriteLine("Export Excel Successfully !");
 
 
             //Console.WriteLine("\n===== Generate PKCS12 Keystore =====");

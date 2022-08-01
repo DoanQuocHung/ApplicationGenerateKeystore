@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TokenService;
 
 namespace DesktopApp
 {
@@ -20,13 +21,26 @@ namespace DesktopApp
         private void button1_Click(object sender, System.EventArgs e)
         {
             string CSRnumber = textBox1.Text;
-            if (CSRnumber == null)
+            if (CSRnumber.Equals(""))
             {
                 MessageBox.Show("Chưa nhập vào dữ liệu");
-                textBox1.
+                
+            }
+            else
+            {
+                ManageKey generateKeypair = new ManageKey();
+                string subjectDN = generateKeypair.createInformation();
+                generateKeypair.generateKey(2048);
+                string CSR = generateKeypair.generateCSR(subjectDN, null);
+
+                WriteExcelFile writeExcelFile = new WriteExcelFile();
+                writeExcelFile.ExportExcel(CSR, null);
+                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and Export Excel Successfully !");
+
+
             }
             
-            MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber);
+            
         }
 
     }

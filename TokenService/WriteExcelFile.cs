@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TokenService
 {
-    class WriteExcelFile
+    public class WriteExcelFile
     {
         public void ExportExcel(string csr,string cipher)
         {
