@@ -11,7 +11,7 @@ namespace TokenService
     class Utils
     {
     
-        public static X509Certificate readCertificate(String pathFile)
+        public static X509Certificate readCertificateFromFile(String pathFile)
         {
             byte[] bytes = File.ReadAllBytes(pathFile);
             X509Certificate certificate = new X509Certificate(bytes);
