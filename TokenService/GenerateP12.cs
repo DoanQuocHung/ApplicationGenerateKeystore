@@ -14,8 +14,9 @@ namespace TokenService
         public void generateP12()
         {
             Pkcs12Store pkcs12Store = new Pkcs12Store();
-            AsymmetricKeyEntry entry = new AsymmetricKeyEntry();
-
+            //AsymmetricKeyEntry entry = new AsymmetricKeyEntry();
+            
+            
             string keyAlias = null;
 
             foreach (string name in pkcs12Store.Aliases)

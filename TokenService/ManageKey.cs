@@ -123,7 +123,6 @@ namespace TokenService
             }
             AsymmetricKeyParameter privateKey = key.Private;
 
-
         }
 
         public AsymmetricKeyParameter getPrivateKey()
@@ -135,5 +134,6 @@ namespace TokenService
         {
             return this.key.Public;
         }
+
     }
 }
