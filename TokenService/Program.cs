@@ -13,13 +13,14 @@ namespace TokenService
     {
         static void Main(string[] args)
         {
-            //ManageKey generateKeypair = new ManageKey();
-            //Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
-            //string subjectDN = generateKeypair.createInformation();
-            //generateKeypair.generateKey(2048);
-            ////generateKeypair.getPrivateKey();
-            //string CSR = generateKeypair.generateCSR(subjectDN, null);
-            //Console.WriteLine("Generated CSR Successfully !");
+            ManageKey generateKeypair = new ManageKey();
+
+            Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
+            string subjectDN = generateKeypair.createInformation();
+            generateKeypair.generateKey(2048);
+            //generateKeypair.getPrivateKey();
+            string CSR = generateKeypair.generateCSR(subjectDN, null);
+            Console.WriteLine("Generated CSR Successfully !");
 
 
             Console.WriteLine("\n===== Decrypt private key =====");
@@ -35,11 +36,11 @@ namespace TokenService
             //Cipher privateKey
             //ManageAlgorithm manageAlgorithm = new ManageAlgorithm();
             //string cipher = manageAlgorithm.EncryptPrivateKey(generateKeypair.getPublicKey().ToString())
-            writeExcelFile.ExportExcel(CSR, null);
+            //writeExcelFile.ExportExcel(CSR);
             Console.WriteLine("Export Excel Successfully !");
 
 
-            //Console.WriteLine("\n===== Generate PKCS12 Keystore =====");
+            Console.WriteLine("\n===== Generate PKCS12 Keystore =====");
             //GenerateP12 generateP12 = new GenerateP12();
             //X509Certificate endEntityCert = Utils.readCertificateFromFile("file/cert.cer");
             ////X509Certificate CertChain = Utils.readCertificateFromFile("file/mobileidcert.cer");
@@ -48,8 +49,8 @@ namespace TokenService
             //Console.WriteLine("\nGenerate PKCS12 Keystore Successfully !");
 
 
-            //Compress File
-            String pathzip = @"C:\Users\gia\Desktop\Zip.zip";
+            Console.WriteLine("\n===== Compress File RAR =====");
+            String pathzip = "file/Zip.zip";
             String path1 = @"C:\Users\gia\Desktop\cert.cer";
             String path2 = @"C:\Users\gia\Desktop\certChain.cer";
             List<String> temp = new List<String>();
@@ -57,6 +58,7 @@ namespace TokenService
             temp.Add(path2);
             IEnumerable<string> file = temp;
             Utils.CreateZipFile(pathzip,file);
+
 
         }
     }

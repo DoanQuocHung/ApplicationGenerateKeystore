@@ -48,23 +48,19 @@ namespace TokenService
 
         public void generateKey(int keySize)
         {
+            key = default(AsymmetricCipherKeyPair);
             var randomGenerator = new CryptoApiRandomGenerator();
             var random = new SecureRandom(randomGenerator);
-
-            key = default(AsymmetricCipherKeyPair);
             var keyGenerationParameters = new KeyGenerationParameters(random, keySize);
-
             var keyPairGenerator = new RsaKeyPairGenerator();
             keyPairGenerator.Init(keyGenerationParameters);
             key = keyPairGenerator.GenerateKeyPair();
 
-
-            //Ghi vao file - tương lai sẽ bỏ :v
+            //Ghi vao file
             StringBuilder CSRPem = new StringBuilder();
             PemWriter CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
             CSRPemWriter.WriteObject(key.Public);
             CSRPemWriter.Writer.Flush();
-
             string CSRtext = CSRPem.ToString();
 
             using (StreamWriter f = new StreamWriter(@"file/public.pem"))  //txt
