@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace TokenService
 {
-    class GenerateP12
+    public class GenerateP12
     {
         public void pkcs12Keystore (X509Certificate newCert, X509Certificate CertChain, AsymmetricCipherKeyPair kp, string FilePath, string CertAlias, string Password)
         {

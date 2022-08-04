@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.X509;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,7 +26,6 @@ namespace DesktopApp
             if (CSRnumber.Equals(""))
             {
                 MessageBox.Show("Chưa nhập vào dữ liệu");
-                
             }
             else
             {
@@ -34,7 +34,7 @@ namespace DesktopApp
                 generateKeypair.generateKey(2048);
                 string CSR = generateKeypair.generateCSR(subjectDN, null);
 
-                WriteExcelFile writeExcelFile = new WriteExcelFile();
+                ExcelExecution writeExcelFile = new ExcelExecution();
                 //writeExcelFile.ExportExcel(CSR);
                 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
@@ -45,86 +45,68 @@ namespace DesktopApp
                 
                 if(saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName);
+                    writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
                 }
 
-                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and Export Excel Successfully !");
-
+                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and save excel file successfully !");
             }
         }
-        
-        //private static void excelFile(System.Data.DataTable dtTable, List<Dictionary<string, object>> list)
-        //{
-        //    SaveFileDialog saveFileDialog = new SaveFileDialog();
-        //    saveFileDialog.Filter = "Execl files (*.xls)|*.xls";
-        //    saveFileDialog.FilterIndex = 0;
-        //    saveFileDialog.RestoreDirectory = true;
-        //    saveFileDialog.CreatePrompt = true;
-        //    saveFileDialog.FileName = null;
-        //    saveFileDialog.Title = "Save path of the file to be exported";
-            
-        //    Excel.Application xlApp = null;
-        //    Excel.Workbooks wkbooks = null;
-        //    Excel.Workbook wkbook = null;
-        //    Excel.Sheets wksheets = null;
-        //    Excel.Worksheet wksheet = null;
 
-        //    try
-        //    {
-        //        xlApp = new Excel.Application();
-        //        wkbooks = xlApp.Workbooks;
-        //        wkbook = wkbooks.Add();
-        //        wksheets = wkbook.Sheets;
-        //        wksheet = wksheets.Add();
+        private void button2_Click(object sender, System.EventArgs e)
+        {
+            if (textBox2.Text.Equals(""))
+            {
+                MessageBox.Show("Chưa chọn file excel !");
+            }
+            else
+            {
+                GenerateP12 generateP12 = new GenerateP12();
+                ManageKey generateKeypair = new ManageKey();
+                ExcelExecution excelExecution = new ExcelExecution();
 
-        //        Console.WriteLine(list[0].Values);
-        //        wksheet.Name = "APPLE";
+                //byte[] browseFile = File.ReadAllBytes(textBox2.Text);
+                string subjectDN = generateKeypair.createInformation();
+                generateKeypair.generateKey(2048);
 
-        //        try
-        //        {
-        //            Console.WriteLine("It is working.");
-        //            for (var i = 0; i < dtTable.Columns.Count; i++)
-        //            {
-        //                wksheet.Cells[1, i + 1] = dtTable.Columns[i].ColumnName;
-        //            }
+                //TEST
+                //X509Certificate endEntityCert = Utils.readCertificateFromFile("file/cert.cer");
+                //X509Certificate CertChain = Utils.readCertificateFromFile("file/mobileidcert.cer");
+                //string EndCertDecoded = Utils.convertCertToBase64(endEntityCert);
+                //string CertChainDecoded = Utils.convertCertToBase64(CertChain);
 
-        //            //rows
-        //            for (var i = 0; i < dtTable.Rows.Count; i++)
-        //            {
-        //                for (var j = 0; j < dtTable.Columns.Count; j++)
-        //                {
-        //                    wksheet.Cells[i + 2, j + 1] = dtTable.Rows[i][j];
-        //                }
-        //            }
-        //            //wkbook.SaveAs(saveFileDialog, XlFileFormat.xlExcel8,false,
-        //            //false, false,false, XlSaveAsAccessMode.xlNoChange, Type.Missing,
-        //            //Type.Missing, Type.Missing,Type.Missing, Type.Missing);
+                //LIVE
+                string EndCertDecoded = excelExecution.ImportExcel(textBox2.Text, 2);
+                string CertChainDecoded = excelExecution.ImportExcel(textBox2.Text, 3);
 
-        //            Console.WriteLine("Processing!");
+                X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(EndCertDecoded));
+                X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(CertChainDecoded));
 
-        //            Console.WriteLine("File saved.");
+                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
 
-        //            wkbooks.Close();
-        //            wkbook.Close(false, Missing.Value, Missing.Value);
-        //            xlApp.Quit();
+                MessageBox.Show("Generate PKCS12 Keystore Successfully !");
+            }
+        }
 
-        //        }
-        //        catch (Exception)
-        //        {
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //    }
+        private void button3_Click(object sender, System.EventArgs e)
+        {
+            string file = "";
+            //string browseResult = textBox2.Text;
 
-        //    finally
-        //    {
-        //        if (wksheets != null) Marshal.ReleaseComObject(wksheets);
-        //        if (wkbook != null) Marshal.ReleaseComObject(wkbook);
-        //        if (wkbooks != null) Marshal.ReleaseComObject(wkbooks);
-        //        if (xlApp != null) Marshal.ReleaseComObject(xlApp);
-        //    }
-        //}
-        
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = ("file/BrowsedFile/");
+            openFileDialog.Title = "Browse Excel File";
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx|All files (*.*)|*.*";
+
+            if(openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                file = openFileDialog.FileName;
+                textBox2.Text = file;
+            }
+
+            //MessageBox.Show("Browse excel file successfully !\nFile path is: " + file);
+            MessageBox.Show("Browse excel file successfully !");
+        }
+
+
     }
 }

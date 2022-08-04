@@ -1,5 +1,4 @@
-﻿
-using Org.BouncyCastle.X509;
+﻿using Org.BouncyCastle.X509;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,12 +6,10 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO.Compression;
-
 
 namespace TokenService
 {
-    class Utils
+    public class Utils
     {
         public static Boolean CheckExtensionPEM(String pathFile)
         {
@@ -35,7 +32,7 @@ namespace TokenService
             return certificate;
         }
 
-        private static string readCertificateFromPemFile(String pathFile)
+        public static string readCertificateFromPemFile(String pathFile)
         {
             String[] q = File.ReadAllLines(pathFile);
             int count = 1;
@@ -63,10 +60,8 @@ namespace TokenService
             return new X509Certificate(bytes);
         }
 
-
         public static void CreateZipFile(string fileName, IEnumerable<string> files)
         {
-            // Create and open a new ZIP file
             var zip = ZipFile.Open(fileName, ZipArchiveMode.Create);
             foreach (var file in files)
             {
@@ -78,6 +73,4 @@ namespace TokenService
         }
 
     }
-
-
 }
