@@ -40,7 +40,7 @@ namespace DesktopApp
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Title = "Export Excel File";
                 saveFileDialog.FileName = "ExportExcelCSR.Dialog";
-                saveFileDialog.Filter = "Text file (*.txt)|*.txt|Excel Files (*.xlsx)|*.xlsx;*.xlsx|All files (*.*)|*.*";
+                saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx";
                 saveFileDialog.FilterIndex = 2;
                 
                 if(saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -95,16 +95,17 @@ namespace DesktopApp
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.InitialDirectory = ("file/BrowsedFile/");
             openFileDialog.Title = "Browse Excel File";
-            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx|All files (*.*)|*.*";
+            openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx";
 
             if(openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 file = openFileDialog.FileName;
                 textBox2.Text = file;
+                MessageBox.Show("Browse excel file successfully !");
             }
 
             //MessageBox.Show("Browse excel file successfully !\nFile path is: " + file);
-            MessageBox.Show("Browse excel file successfully !");
+            //MessageBox.Show("Browse excel file successfully !");
         }
 
 
