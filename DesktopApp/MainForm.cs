@@ -57,9 +57,25 @@ namespace DesktopApp
             if (textBox2.Text.Equals("")|| !Utils.CheckInputPath(textBox2.Text))
             {
                 MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn!!", "Thông báo người dùng");
+                return;
                 //MessageBox.Show()
-            }
-            else
+            }else {
+                FileStream fs = null;
+                try
+                {
+                    fs = new FileStream(textBox2.Text, FileMode.Open, FileAccess.Read);
+                }
+                catch (FileNotFoundException q)
+                {
+                    MessageBox.Show("File không tồn tại!!", "Lỗi");
+                    return;
+                }
+                catch (IOException q)
+                {
+                    MessageBox.Show("File đang được mở bởi người dùng! Vui lòng tắt file trước khi upload!!", "Lỗi");
+                    return;
+                }
+            }            
             {
                 GenerateP12 generateP12 = new GenerateP12();
                 ManageKey generateKeypair = new ManageKey();

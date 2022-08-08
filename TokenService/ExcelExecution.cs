@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace TokenService
 {
@@ -45,11 +46,23 @@ namespace TokenService
             sw.Close();
         }
 
-        public string ImportExcel(string fileName, int cellColumn)
+        public string ImportExcel(string fileName, int cellColumn) 
         {
             IWorkbook workbook;
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            fs.Dispose();
+            FileStream fs = null;
+            try
+            {                
+                fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            }            
+            catch (FileNotFoundException q)
+            {
+                MessageBox.Show("File không tồn tại!!", "Lỗi");
+                return null;
+            } catch (IOException q)
+            {
+                MessageBox.Show("File đang được mở bởi người dùng! Vui lòng tắt file trước khi upload!!", "Lỗi");
+                return null;
+            }
             workbook = new XSSFWorkbook(fs);
             
             ISheet sheet = workbook.GetSheetAt(0);
