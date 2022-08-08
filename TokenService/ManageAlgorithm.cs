@@ -1,4 +1,5 @@
-﻿using Org.BouncyCastle.Crypto;
+﻿
+using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
 using System;
@@ -12,16 +13,17 @@ using System.Threading.Tasks;
 namespace TokenService
 {
     internal class ManageAlgorithm
-    {     
+    {
+        private int CountCharacter = 32;
 
-        public  string EncryptPrivateKey(AsymmetricCipherKeyPair key)
+        public string EncryptPrivateKey(AsymmetricCipherKeyPair key)
         {
-            if(key == null)
+            if (key == null)
                 return null;
             var a = (RsaKeyParameters)key.Public;
-            BigInteger modulus = a.Modulus;            
+            BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
-            string result = modulus.ToString() +";" + exponent.ToString();
+            string result = modulus.ToString() + ";" + exponent.ToString();
             //Console.WriteLine("resultPublic:" + result);
 
             var b = (RsaKeyParameters)key.Private;
@@ -32,16 +34,19 @@ namespace TokenService
 
             return this.EncryptPrivateKey(result, result2);
         }
-        public  string EncryptPrivateKey(string publickey, string plainText)
+
+        private string EncryptPrivateKey(string publickey, string plainText)
         {
-            string key = this.HashKey(publickey);
-            Console.WriteLine("Key:" + key);
+            string key = this.HashMD5(publickey);
+            //Console.WriteLine("HashKey:" + key);
+            string keymain = this.concatKey_Key(key);
+
             byte[] iv = new byte[16];
             byte[] array;
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = Encoding.UTF8.GetBytes(key);
+                aes.Key = Encoding.UTF8.GetBytes(keymain);
                 aes.IV = iv;
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
@@ -59,23 +64,32 @@ namespace TokenService
                     }
                 }
             }
-
-            return Convert.ToBase64String(array);
+            string result = Convert.ToBase64String(array);
+            this.writeToFile(key, result);
+            return result;
         }
 
-        public string DecryptPrivateKey(AsymmetricKeyParameter keyPublic, string cipherText)
+        public string DecryptPrivateKey(AsymmetricKeyParameter keyPublic)
         {
+            //Get modulus + exponent and convert to string
             var a = (RsaKeyParameters)keyPublic;
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
             string result = modulus.ToString() + ";" + exponent.ToString();
-            //Console.WriteLine("resultPublic:" + result);
+            //Hash MD5 key
+            string key = this.HashMD5(result);
+            //Console.WriteLine("HashKey:" + key);
+            //Read from file and get cipherText
+            string cipher_privatekey = this.readFromFile(key);
 
-            return this.DecryptPrivateKey(result, cipherText);
+            return this.DecryptPrivateKey(key, cipher_privatekey);
         }
-        public  string DecryptPrivateKey(string publickey, string cipherText)
+
+        private string DecryptPrivateKey(string publickey_afterhash, string cipherText)
         {
-            string key = this.HashKey(publickey);
+            //Hash MD5 to get key            
+            string key = this.concatKey_Key(publickey_afterhash);
+
             byte[] iv = new byte[16];
             byte[] buffer = Convert.FromBase64String(cipherText);
 
@@ -98,7 +112,8 @@ namespace TokenService
             }
         }
 
-        private  string HashKey(String publickey)
+        //Using for create hash of PublicKey
+        private string HashMD5(String publickey)
         {
             using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
             {
@@ -114,6 +129,62 @@ namespace TokenService
                 }
                 return sb.ToString();
             }
+        }
+
+        //Using for create PrivateKey of Backend
+        private string SuperPrivate()
+        {
+            NPOI.Util.CRC32 crc32 = new NPOI.Util.CRC32();
+            return crc32.StringCRC("Mobile-id").ToString("x2");
+        }
+
+        //Handle some business about create Key to en-decrypt file
+        private string concatKey_Key(string key)
+        {
+            string privatekey = this.SuperPrivate();
+            string temp = key.Remove(key.Length - 8, 8);
+            temp += privatekey;
+            return temp;
+        }
+
+        //Write to file Temp in System
+        private void writeToFile(String key, String cipher)
+        {
+            string temporaryPath = Path.GetTempPath();
+            string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
+            string path = @"C:\Users\gia\Desktop\tesst.tmp";
+            string result = key + ":" + cipher;
+            //Console.WriteLine("Append:" + result);
+            File.AppendAllText(path, result + "\n");
+            File.SetAttributes(path, FileAttributes.Hidden);
+        }
+
+        public string readFromFile(String key)
+        {
+            string temporaryPath = Path.GetTempPath();
+            string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
+            string path = @"C:\Users\gia\Desktop\tesst.tmp";
+            string[] line = File.ReadAllLines(path);
+            string temp = null;
+            string result = null;
+            for (int i = 0; i < line.Length; i++)
+            {
+                string[] row = line[i].Split(':');
+                string keyOfRow = row[0];
+                if (keyOfRow.Equals(key))
+                {
+                    result = row[1];
+                    continue;
+                }
+                temp += line[i] += "\n";
+            }
+            if (result == null)
+                return null;
+            //Get object and delete row            
+            File.Delete(path);
+            File.AppendAllText(path, temp);
+            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
+            return result;
         }
     }
 }
