@@ -63,8 +63,9 @@ namespace TokenService
 
             cellValue = Filter(cellValue, charsToRemove);
 
-            string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).Skip(1).ToArray();
-
+            string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
+            lines = lines.Where(w => w != lines[0]).ToArray();
+            //string[] FinalResult = lines.Skip
             return cellValue;
 
             //MULTIPLE
