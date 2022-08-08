@@ -25,7 +25,7 @@ namespace DesktopApp
             string CSRnumber = textBox1.Text;
             if (CSRnumber.Equals(""))
             {
-                MessageBox.Show("Chưa nhập vào dữ liệu");
+                MessageBox.Show("Chưa nhập vào dữ liệu", "Thông báo người dùng");
             }
             else
             {
@@ -48,7 +48,7 @@ namespace DesktopApp
                     writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
                 }
 
-                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and save excel file successfully !");
+                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and save excel file successfully !", "Thông báo người dùng");
             }
         }
 
@@ -56,7 +56,8 @@ namespace DesktopApp
         {
             if (textBox2.Text.Equals(""))
             {
-                MessageBox.Show("Chưa chọn file excel !");
+                MessageBox.Show("Chưa chọn file excel !", "Thông báo người dùng");
+                //MessageBox.Show()
             }
             else
             {
@@ -83,7 +84,7 @@ namespace DesktopApp
 
                 generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
 
-                MessageBox.Show("Generate PKCS12 Keystore Successfully !");
+                MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
             }
         }
 
@@ -100,11 +101,11 @@ namespace DesktopApp
             {
                 file = openFileDialog.FileName;
                 textBox2.Text = file;
-                MessageBox.Show("Browse excel file successfully !");
+                MessageBox.Show("Browse excel file successfully !", "Thông báo người dùng");
             }
 
-            //MessageBox.Show("Browse excel file successfully !\nFile path is: " + file);
-            //MessageBox.Show("Browse excel file successfully !");
+            //MessageBox.Show("Browse excel file successfully !\nFile path is: " + file, "Thông báo người dùng");
+            //MessageBox.Show("Browse excel file successfully !", "Thông báo người dùng");
         }
 
 
