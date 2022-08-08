@@ -126,7 +126,7 @@ namespace DesktopApp
             this.button3.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button3.Location = new System.Drawing.Point(830, 189);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(123, 43);
+            this.button3.Size = new System.Drawing.Size(132, 43);
             this.button3.TabIndex = 5;
             this.button3.Text = "Browse File";
             this.button3.UseVisualStyleBackColor = true;
@@ -145,9 +145,9 @@ namespace DesktopApp
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(969, 189);
+            this.button2.Location = new System.Drawing.Point(968, 189);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(129, 43);
+            this.button2.Size = new System.Drawing.Size(139, 43);
             this.button2.TabIndex = 2;
             this.button2.Text = "Cấp phát P12";
             this.button2.UseVisualStyleBackColor = true;

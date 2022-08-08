@@ -39,9 +39,9 @@ namespace TokenService
                 row2.CreateCell(3).SetCellValue("");
 
             }
-
             FileStream sw = File.Create(fileName);    //file/ExportExcelCSR.xlsx
             workbook.Write(sw);
+            workbook.Close();
             sw.Close();
         }
 
@@ -57,7 +57,6 @@ namespace TokenService
             IRow curRow = sheet.GetRow(1);
             string cellValue = curRow.GetCell(cellColumn).StringCellValue.Trim();
             Console.WriteLine(cellValue);
-
             return cellValue;
 
             //MULTIPLE

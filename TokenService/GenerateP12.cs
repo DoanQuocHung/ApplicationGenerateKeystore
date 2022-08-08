@@ -38,6 +38,7 @@ namespace TokenService
                     Password.ToCharArray(),
                     new SecureRandom(new CryptoApiRandomGenerator())
                     );
+                //certFile.Close();
             }
 
 

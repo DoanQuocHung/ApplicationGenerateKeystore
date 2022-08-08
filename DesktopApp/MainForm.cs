@@ -93,7 +93,6 @@ namespace DesktopApp
             //string browseResult = textBox2.Text;
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = ("file/BrowsedFile/");
             openFileDialog.Title = "Browse Excel File";
             openFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx";
 
