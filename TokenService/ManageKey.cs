@@ -17,9 +17,6 @@ namespace TokenService
 {
     public class ManageKey
     {
-        public static String type_pkcs12 = "PKCS12";
-        public static String type_jks = "JKS";
-
         private AsymmetricCipherKeyPair key;
         private Pkcs10CertificationRequest CSR;
 
@@ -57,28 +54,28 @@ namespace TokenService
             key = keyPairGenerator.GenerateKeyPair();
 
             //Ghi vao file
-            StringBuilder CSRPem = new StringBuilder();
-            PemWriter CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
-            CSRPemWriter.WriteObject(key.Public);
-            CSRPemWriter.Writer.Flush();
-            string CSRtext = CSRPem.ToString();
+            //StringBuilder CSRPem = new StringBuilder();
+            //PemWriter CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
+            //CSRPemWriter.WriteObject(key.Public);
+            //CSRPemWriter.Writer.Flush();
+            //string CSRtext = CSRPem.ToString();
 
-            using (StreamWriter f = new StreamWriter(@"file/public.pem"))  //txt
-            {
-                f.Write(CSRtext);
-            }
+            //using (StreamWriter f = new StreamWriter(@"file/public.pem"))  //txt
+            //{
+            //    f.Write(CSRtext);
+            //}
 
-            CSRPem = new StringBuilder();
-            CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
-            CSRPemWriter.WriteObject(key.Private);
-            CSRPemWriter.Writer.Flush();
+            //CSRPem = new StringBuilder();
+            //CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
+            //CSRPemWriter.WriteObject(key.Private);
+            //CSRPemWriter.Writer.Flush();
 
-            CSRtext = CSRPem.ToString();
+            //CSRtext = CSRPem.ToString();
 
-            using (StreamWriter f = new StreamWriter(@"file/private.pem"))  //txt
-            {
-                f.Write(CSRtext);
-            }
+            //using (StreamWriter f = new StreamWriter(@"file/private.pem"))  //txt
+            //{
+            //    f.Write(CSRtext);
+            //}
         }
 
         public string generateCSR(String subjectDN, String algorithm)
@@ -104,31 +101,6 @@ namespace TokenService
                 f.Write(CSRtext);
             }
             return CSRtext;
-        }
-
-        public void generateKeyStore(String certificate, String CACertificate, String alias, String password, String type)
-        {
-            if (certificate == null || CACertificate == null || alias == null
-                || password == null || type == null)
-            {
-                throw new Exception("Need more information");
-            }
-            if (this.key == null)
-            {
-                throw new Exception("Please, Create Key first!!");
-            }
-            AsymmetricKeyParameter privateKey = key.Private;
-
-        }
-
-        public AsymmetricKeyParameter getPrivateKey()
-        {
-            return this.key.Private;
-        }
-
-        public AsymmetricKeyParameter getPublicKey()
-        {
-            return this.key.Public;
         }
 
     }
