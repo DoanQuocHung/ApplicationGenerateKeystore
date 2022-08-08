@@ -16,6 +16,7 @@ namespace TokenService
     {
         private int CountCharacter = 32;
 
+        //Encrypt Private Key and store into a Hidden file
         public string EncryptPrivateKey(AsymmetricCipherKeyPair key)
         {
             if (key == null)
@@ -68,8 +69,8 @@ namespace TokenService
             this.writeToFile(key, result);
             return result;
         }
-
-        public string DecryptPrivateKey(AsymmetricKeyParameter keyPublic)
+        
+        public RsaKeyParameters DecryptPrivateKey(AsymmetricKeyParameter keyPublic)
         {
             //Get modulus + exponent and convert to string
             var a = (RsaKeyParameters)keyPublic;
@@ -85,18 +86,19 @@ namespace TokenService
             return this.DecryptPrivateKey(key, cipher_privatekey);
         }
 
-        private string DecryptPrivateKey(string publickey_afterhash, string cipherText)
+        private RsaKeyParameters DecryptPrivateKey(string publickey_afterhash, string cipherText)
         {
             //Hash MD5 to get key            
             string key = this.concatKey_Key(publickey_afterhash);
 
             byte[] iv = new byte[16];
             byte[] buffer = Convert.FromBase64String(cipherText);
+            String result = "";
 
             using (Aes aes = Aes.Create())
             {
                 aes.Key = Encoding.UTF8.GetBytes(key);
-                aes.IV = iv;
+                aes.IV = iv;                
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
                 using (MemoryStream memoryStream = new MemoryStream(buffer))
@@ -105,11 +107,18 @@ namespace TokenService
                     {
                         using (StreamReader streamReader = new StreamReader((Stream)cryptoStream))
                         {
-                            return streamReader.ReadToEnd();
+                            result =  streamReader.ReadToEnd();
                         }
                     }
                 }
             }
+            //Create Private Key from data
+            String[] q = result.Split(';');
+
+            BigInteger modulus = new BigInteger(q[0]);
+            BigInteger exponent = new BigInteger(q[1]);
+            RsaKeyParameters privateKey = new RsaKeyParameters(true,modulus,exponent);
+            return privateKey;
         }
 
         //Using for create hash of PublicKey
@@ -159,7 +168,7 @@ namespace TokenService
             File.SetAttributes(path, FileAttributes.Hidden);
         }
 
-        public string readFromFile(String key)
+        private string readFromFile(String key)
         {
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
@@ -186,5 +195,7 @@ namespace TokenService
             File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
             return result;
         }
+
+       
     }
 }
