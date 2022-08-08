@@ -23,9 +23,9 @@ namespace DesktopApp
         private void button1_Click(object sender, System.EventArgs e)
         {
             string CSRnumber = textBox1.Text;
-            if (CSRnumber.Equals(""))
+            if (Utils.CheckInputNumber(CSRnumber))
             {
-                MessageBox.Show("Chưa nhập vào dữ liệu", "Thông báo người dùng");
+                MessageBox.Show("Chưa nhập dữ liệu hoặc dữ liệu không hợp lệ (kiểu số)", "Thông báo người dùng");
             }
             else
             {
@@ -54,9 +54,9 @@ namespace DesktopApp
 
         private void button2_Click(object sender, System.EventArgs e)
         {
-            if (textBox2.Text.Equals(""))
+            if (textBox2.Text.Equals("")|| Utils.CheckInputPath(textBox2.Text))
             {
-                MessageBox.Show("Chưa chọn file excel !", "Thông báo người dùng");
+                MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn!!", "Thông báo người dùng");
                 //MessageBox.Show()
             }
             else
