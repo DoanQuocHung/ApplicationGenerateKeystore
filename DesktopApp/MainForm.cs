@@ -92,8 +92,8 @@ namespace DesktopApp
                 ExcelExecution excelExecution = new ExcelExecution();
 
                 //byte[] browseFile = File.ReadAllBytes(textBox2.Text);
-                string subjectDN = generateKeypair.createInformation();
-                generateKeypair.generateKey(2048);
+                //string subjectDN = generateKeypair.createInformation();
+                //generateKeypair.generateKey(2048);
 
                 //TEST
                 //X509Certificate endEntityCert = Utils.readCertificateFromFile("file/cert.cer");
