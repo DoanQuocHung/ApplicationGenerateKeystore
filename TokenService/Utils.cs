@@ -6,11 +6,35 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System;
+using System.Text.RegularExpressions;
 
 namespace TokenService
 {
     public class Utils
     {
+        //Using regex (regular expression) to check input 
+        public static Boolean CheckInputNumber(string input)
+        {
+            string pattern = @"^\d+$";
+            Regex regex = new Regex(pattern);
+            return Regex.IsMatch(input, pattern);           
+        }
+        public static Boolean CheckInputPath(string input)
+        {
+            //Check input path
+            string pattern = @"^[0-9a-zA-Z_\-.\\:\s]+$";
+            Regex regex = new Regex(pattern);
+            if(!Regex.IsMatch(input,pattern))
+                return false;
+            //Check excel extension
+            string end = input.Substring(input.Length-4);
+            if (!end.Equals("xlsx"))
+                return false;            
+            return true;
+        }
+        
+
         public static Boolean CheckExtensionPEM(String pathFile)
         {
             String q = File.ReadAllText(pathFile, Encoding.UTF8);
