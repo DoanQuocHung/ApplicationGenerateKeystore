@@ -54,14 +54,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DesktopApp.exe" size="31200">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DesktopApp.exe" size="31712">
       <assemblyIdentity name="DesktopApp" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>/3H96ZZxYPDTFwEz/rVuYuNM1Rr5LubVQ5djRKvwY4w=</dsig:DigestValue>
+        <dsig:DigestValue>jzIkGHhM0brYZ6mWT/drOKZne1nWVmOVTdhkqyokUoU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -126,14 +126,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TokenService.exe" size="14336">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TokenService.exe" size="14848">
       <assemblyIdentity name="TokenService" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>LTwoSHspqgMmGP2dm8C8pSu+lf31GUaw+Zn/1e066qo=</dsig:DigestValue>
+        <dsig:DigestValue>TiqOY7xk9YPtcMRThXPcP0ZTahFPExo3sjnrijBP5w8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
