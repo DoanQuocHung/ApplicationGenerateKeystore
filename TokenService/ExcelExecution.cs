@@ -59,14 +59,29 @@ namespace TokenService
             //SINGLE
             IRow curRow = sheet.GetRow(1);
             string cellValue = curRow.GetCell(cellColumn).StringCellValue.Trim();
+
             List<char> charsToRemove = new List<char>() { '\"' };
+            if (Utils.CheckFormatOfString(cellValue))
+            {
+                cellValue = Filter(cellValue, charsToRemove);
 
-            cellValue = Filter(cellValue, charsToRemove);
+                string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
+                lines = lines.Where(w => w != lines[0]).ToArray();
+                lines = lines.Take(lines.Count() - 1).ToArray();
+                //string[] FinalResult = lines.Skip(lines.Length - 1).ToArray();
 
-            string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
-            lines = lines.Where(w => w != lines[0]).ToArray();
-            //string[] FinalResult = lines.Skip
-            return cellValue;
+                string rs = "";
+                foreach(string line in lines)
+                {
+                    rs += line;
+                }
+                return rs;
+            }
+            else
+            {
+                return cellValue;
+            }
+            
 
             //MULTIPLE
             //for (int i = 2; i <= rowCount; i++)

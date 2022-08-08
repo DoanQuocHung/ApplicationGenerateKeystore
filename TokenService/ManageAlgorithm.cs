@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace TokenService
 {
-    internal class ManageAlgorithm
+    public class ManageAlgorithm
     {
         private int CountCharacter = 32;
 

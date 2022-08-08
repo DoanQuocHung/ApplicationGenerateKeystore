@@ -64,8 +64,11 @@ namespace TokenService
             //Utils.CreateZipFile(pathzip,file);
 
             //TEST 
-
-
+            //ExcelExecution excelExecution = new ExcelExecution();
+            //string EndCertDecoded = excelExecution.ImportExcel("file/ExportExcelCSR.Dialog.xlsx", 2);
+            //Console.WriteLine("test cert: " + EndCertDecoded);
+            //string CertChainDecoded = excelExecution.ImportExcel("file/ExportExcelCSR.Dialog.xlsx", 3);
+            //Console.WriteLine("test cert chain: " + CertChainDecoded);
         }
     }
 }
