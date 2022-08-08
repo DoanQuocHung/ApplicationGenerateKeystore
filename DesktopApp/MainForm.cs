@@ -57,7 +57,6 @@ namespace DesktopApp
             if (textBox2.Text.Equals(""))
             {
                 MessageBox.Show("Chưa chọn file excel !", "Thông báo người dùng");
-                //MessageBox.Show()
             }
             else
             {
@@ -83,7 +82,7 @@ namespace DesktopApp
                 X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(CertChainDecoded));
 
                 generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
-
+                
                 MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
             }
         }

@@ -49,6 +49,7 @@ namespace TokenService
         {
             IWorkbook workbook;
             FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            fs.Dispose();
             workbook = new XSSFWorkbook(fs);
             
             ISheet sheet = workbook.GetSheetAt(0);

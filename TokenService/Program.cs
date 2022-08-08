@@ -27,7 +27,7 @@ namespace TokenService
             ManageAlgorithm a = new ManageAlgorithm();
             string result = a.EncryptPrivateKey(generateKeypair.getKey());
             Console.WriteLine("Encrypt:" + result);
-            string privatekey = a.DecryptPrivateKey(generateKeypair.getPublicKey(), result);
+            string privatekey = a.DecryptPrivateKey(generateKeypair.getPublicKey());
             Console.WriteLine("\nPrivatekey:" + privatekey);
 
 
