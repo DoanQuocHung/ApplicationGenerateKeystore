@@ -33,6 +33,14 @@ namespace TokenService
                 return false;            
             return true;
         }
+
+        public static string UsingRegexDeleteNewLine(string input)
+        {
+            //string pattern = @"[\n]";
+            //Regex regex = new Regex(pattern);
+            string replacewith = "";
+            return input.Replace("\n",replacewith);            
+        }
         
 
         public static Boolean CheckExtensionPEM(String pathFile)
