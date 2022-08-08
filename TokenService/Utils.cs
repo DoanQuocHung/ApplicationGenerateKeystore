@@ -35,14 +35,44 @@ namespace TokenService
         }
 
         public static string UsingRegexDeleteNewLine(string input)
-        {
-            //string pattern = @"[\n]";
-            //Regex regex = new Regex(pattern);
+        {            
             string replacewith = "";
             return input.Replace("\n",replacewith);            
         }
-        
 
+        public static String convertCertToBase64(X509Certificate certificate)
+        {
+            byte[] bytes = certificate.GetEncoded();
+            return Convert.ToBase64String(bytes);
+        }
+
+        public static X509Certificate convertBase64ToCert(String base64)
+        {
+            byte[] bytes = Convert.FromBase64String(base64);
+            return new X509Certificate(bytes);
+        }
+
+        public static void CreateZipFile(string fileName, IEnumerable<string> files)
+        {
+            var zip = ZipFile.Open(fileName, ZipArchiveMode.Create);
+            foreach (var file in files)
+            {
+                // Add the entry for each file
+                zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
+            }            
+            zip.Dispose();
+        }
+        public static Boolean CheckFormatOfString(String input)
+        {
+            //Check if PEM extension or not 
+            if (input.Contains("BEGIN") || input.Contains("END") || input.Contains("begin") || input.Contains("end"))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Deprecated=================================================================
         public static Boolean CheckExtensionPEM(String pathFile)
         {
             String q = File.ReadAllText(pathFile, Encoding.UTF8);
@@ -80,29 +110,7 @@ namespace TokenService
             return base64;
         }
 
-        public static String convertCertToBase64(X509Certificate certificate)
-        {
-            byte[] bytes = certificate.GetEncoded();
-            return Convert.ToBase64String(bytes);
-        }
-
-        public static X509Certificate convertBase64ToCert(String base64)
-        {
-            byte[] bytes = Convert.FromBase64String(base64);
-            return new X509Certificate(bytes);
-        }
-
-        public static void CreateZipFile(string fileName, IEnumerable<string> files)
-        {
-            var zip = ZipFile.Open(fileName, ZipArchiveMode.Create);
-            foreach (var file in files)
-            {
-                // Add the entry for each file
-                zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-            }
-            // Dispose of the object when we are done
-            zip.Dispose();
-        }
+        
 
     }
 }
