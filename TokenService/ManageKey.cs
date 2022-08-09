@@ -37,8 +37,7 @@ namespace TokenService
             String O = "Cong Ty ABC";       //Organization Name
             String L = "Quan 1";            //Location
             String S = "TPHCM";             //State
-            String C = "VN";                //Country
-            //String P = "PrivateKey";
+            String C = "VN";                //Country            
             String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S;
             return result;
         }

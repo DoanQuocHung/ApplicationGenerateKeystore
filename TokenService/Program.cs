@@ -3,10 +3,10 @@ using Org.BouncyCastle.X509;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Security;
 
 namespace TokenService
 {
@@ -64,10 +64,19 @@ namespace TokenService
             //IEnumerable<string> file = temp;
             //Utils.CreateZipFile(pathzip,file);
 
-            Console.WriteLine("\n===== Generate random password =====");
-            string passWord = Utils.CreatePassword(8);
-            Console.WriteLine("TEST: " + passWord);
+            //Console.WriteLine("\n===== Generate random password =====");
+            //string passWord = Utils.CreatePassword(8);
+            //Console.WriteLine("TEST: " + passWord);
 
+            string path = @"C:\Users\gia\Desktop\New Text Document (2).txt";
+            string q = File.ReadAllText(path);
+            Console.WriteLine("Level:"+Utils.CheckLevelOfCertificate(q));
+            string[] result = Utils.convertPEMtoArrayBase64(q);
+            foreach(string s in result)
+            {
+                Console.WriteLine("Ketqua:" + s);
+            }
+            //Console.WriteLine("String:" + Utils.convertPEMtoArrayBase64(q));
         }
     }
 }
