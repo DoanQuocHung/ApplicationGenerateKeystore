@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Sdmcjd53CXycmN6gKKqkOhJeJmbWCqBwB4wMSZJze2o=</dsig:DigestValue>
+        <dsig:DigestValue>ThphonOgn2iIfjnNu2Nnb9O98L6+1r/I6zn7qbc3njA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -126,14 +126,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TokenService.exe" size="14336">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="TokenService.exe" size="13824">
       <assemblyIdentity name="TokenService" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>8RRMIPKSmSjKr9SakyMORcqOxxGTH9qQRnzJvwLWJVg=</dsig:DigestValue>
+        <dsig:DigestValue>z55H1cGslLq3xMKMnjOaTqEBxE74fv+6gyfjUaAjB7I=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
