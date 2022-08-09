@@ -7,14 +7,14 @@
     <framework targetVersion="4.7.2" profile="Full" supportedRuntime="4.0.30319" />
   </compatibleFrameworks>
   <dependency>
-    <dependentAssembly dependencyType="install" codebase="DesktopApp.exe.manifest" size="8213">
+    <dependentAssembly dependencyType="install" codebase="DesktopApp.exe.manifest" size="8214">
       <assemblyIdentity name="DesktopApp.exe" version="1.0.0.4" publicKeyToken="0000000000000000" language="neutral" processorArchitecture="msil" type="win32" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>sik1trRBRIVYqUdG1NfgUvafr5xYLbXIuF3sWirZyDA=</dsig:DigestValue>
+        <dsig:DigestValue>xFwzu9UKBtQMSoA8W/HWMGt/39UwNARjVOkRDz37OLs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

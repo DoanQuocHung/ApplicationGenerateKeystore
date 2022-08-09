@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 using System.Windows.Forms;
 using TokenService;
 
@@ -67,7 +68,6 @@ namespace DesktopApp
             {
                 MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn!!", "Thông báo người dùng");
                 return;
-                //MessageBox.Show()
             }else {
                 FileStream fs = null;
                 try
@@ -108,8 +108,11 @@ namespace DesktopApp
                 X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(CertChainDecoded));
                 AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
                 generateAlgorithm.DecryptPrivateKey(publicKey);
-                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/testP12.p12", "testP12", "12345678");
 
+                string passWord = Utils.CreatePassword(8);
+                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/KeyStoreP12.p12", "TESTP12", passWord);
+
+                File.WriteAllText("file/passwordP12.txt", passWord);
                 MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
             }
         }
@@ -129,9 +132,6 @@ namespace DesktopApp
                 textBox2.Text = file;
                 MessageBox.Show("Browse excel file successfully !", "Thông báo người dùng");
             }
-
-            //MessageBox.Show("Browse excel file successfully !\nFile path is: " + file, "Thông báo người dùng");
-            //MessageBox.Show("Browse excel file successfully !", "Thông báo người dùng");
         }
 
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace TokenService
 {
@@ -13,9 +14,9 @@ namespace TokenService
     {
         static void Main(string[] args)
         {
-            ManageKey generateKeypair = new ManageKey();
+            //ManageKey generateKeypair = new ManageKey();
 
-            Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
+            //Console.WriteLine("===== Sinh khóa RSA và sinh CSR =====");
             //string subjectDN = generateKeypair.createInformation();
             //generateKeypair.generateKey(2048);
             //string CSR = generateKeypair.generateCSR(subjectDN, null);
@@ -63,6 +64,9 @@ namespace TokenService
             //IEnumerable<string> file = temp;
             //Utils.CreateZipFile(pathzip,file);
 
+            Console.WriteLine("\n===== Generate random password =====");
+            string passWord = Utils.CreatePassword(8);
+            Console.WriteLine("TEST: " + passWord);
 
         }
     }

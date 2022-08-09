@@ -161,7 +161,7 @@ namespace TokenService
         {
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
-            string path = @"C:\Users\gia\Desktop\tesst.tmp";
+            string path = "file/test.tmp";
             string result = key + ":" + cipher;
             //Console.WriteLine("Append:" + result);
             File.AppendAllText(path, result + "\n");
@@ -172,7 +172,7 @@ namespace TokenService
         {
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
-            string path = @"C:\Users\gia\Desktop\tesst.tmp";
+            string path = "file/test.tmp";
             string[] line = File.ReadAllLines(path);
             string temp = null;
             string result = null;
