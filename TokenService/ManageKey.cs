@@ -17,6 +17,7 @@ namespace TokenService
 {
     public class ManageKey
     {
+        private string version = 2;
         private AsymmetricCipherKeyPair key;
         private Pkcs10CertificationRequest CSR;
 
