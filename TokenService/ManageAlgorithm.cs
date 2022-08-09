@@ -190,9 +190,9 @@ namespace TokenService
             if (result == null)
                 return null;
             //Get object and delete row            
-            File.Delete(path);
-            File.AppendAllText(path, temp);
-            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
+            //File.Delete(path);
+            //File.AppendAllText(path, temp);
+            //File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
             return result;
         }
 
