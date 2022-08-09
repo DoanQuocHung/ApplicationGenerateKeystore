@@ -61,27 +61,33 @@ namespace TokenService
             string cellValue = curRow.GetCell(cellColumn).StringCellValue.Trim();
 
             List<char> charsToRemove = new List<char>() { '\"' };
-            if (Utils.CheckFormatOfString(cellValue))
-            {
-                cellValue = Filter(cellValue, charsToRemove);
-
+            cellValue = Filter(cellValue, charsToRemove);
+            //Level1
+            if (Utils.CheckFormatPEMOfString(cellValue) && Utils.CheckLevelOfCertificate(cellValue) == 1)
+            {                
                 string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
                 lines = lines.Where(w => w != lines[0]).ToArray();
                 lines = lines.Take(lines.Count() - 1).ToArray();
                 //string[] FinalResult = lines.Skip(lines.Length - 1).ToArray();
 
                 string rs = "";
-                foreach(string line in lines)
+                foreach (string line in lines)
                 {
                     rs += line;
                 }
                 return rs;
             }
+            //Level Greater than 1
+            else if (Utils.CheckFormatPEMOfString(cellValue) && Utils.CheckLevelOfCertificate(cellValue) != 1)
+            {
+                cellValue = Filter(cellValue, charsToRemove);
+                return cellValue;
+            }
             else
             {
                 return cellValue;
             }
-            
+
 
             //MULTIPLE
             //for (int i = 2; i <= rowCount; i++)

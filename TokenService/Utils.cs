@@ -62,7 +62,7 @@ namespace TokenService
             }            
             zip.Dispose();
         }
-        public static Boolean CheckFormatOfString(String input)
+        public static Boolean CheckFormatPEMOfString(String input)
         {
             //Check if PEM extension or not 
             if (input.Contains("BEGIN") || input.Contains("END") || input.Contains("begin") || input.Contains("end"))
@@ -70,6 +70,29 @@ namespace TokenService
                 return true;
             }
             return false;
+        }
+
+        public static int CheckLevelOfCertificate(String input)
+        {
+            int level = 0;
+            string[] delimiter = {"BEGIN"};
+            string[] tokens = input.Split(delimiter, StringSplitOptions.None);            
+            return tokens.Length - 1;
+        }
+
+        public static string[] convertPEMtoArrayBase64(String peminput)
+        {
+            string pattern = @"[-]*(BEGIN|END|begin|end)[ ]+(CERTIFICATE|certificate)[-]*";
+            string[] delimiter = { "*" };
+            string temp = Regex.Replace(peminput, pattern, "*");
+            string[] tokens = temp.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);            
+            return tokens;
+        }
+
+        public static Boolean isBlank(string input)
+        {
+            string pattern = @"^(\s|\n|\t)*$";
+            return Regex.IsMatch(input, pattern);
         }
 
         //Deprecated=================================================================
