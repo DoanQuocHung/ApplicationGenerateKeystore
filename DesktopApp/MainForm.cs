@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Security;
 using System.Windows.Forms;
 using TokenService;
 
@@ -107,10 +106,10 @@ namespace DesktopApp
                 X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(EndCertDecoded));
                 X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(CertChainDecoded));
                 AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
-                generateAlgorithm.DecryptPrivateKey(publicKey);
+                RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
 
                 string passWord = Utils.CreatePassword(8);
-                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, generateKeypair.getKey(), "file/KeyStoreP12.p12", "TESTP12", passWord);
+                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
 
                 File.WriteAllText("file/passwordP12.txt", passWord);
                 MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
