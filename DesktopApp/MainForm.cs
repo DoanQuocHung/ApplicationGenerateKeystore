@@ -27,7 +27,7 @@ namespace DesktopApp
             string CSRnumber = textBox1.Text;
             if (!Utils.CheckInputNumber(CSRnumber))
             {
-                MessageBox.Show("Chưa nhập dữ liệu hoặc dữ liệu không hợp lệ (kiểu số)", "Thông báo người dùng");
+                MessageBox.Show("Chưa nhập dữ liệu hoặc dữ liệu không hợp lệ (kiểu số)", "Thông báo");
             }
             else
             {
@@ -42,9 +42,7 @@ namespace DesktopApp
                 //Create storage to store PrivateKey
                 storePrivateKey.EncryptPrivateKey(generateKeypair.getKey());
 
-                //Write to Excel File
                 ExcelExecution writeExcelFile = new ExcelExecution();
-                //writeExcelFile.ExportExcel(CSR);
 
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Title = "Export Excel File";
@@ -57,7 +55,7 @@ namespace DesktopApp
                     writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
                 }
 
-                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nGenerated CSR and save excel file successfully !", "Thông báo người dùng");
+                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nSinh CSR và lưu file excel thành công !", "Thông báo");
             }
         }
 
@@ -65,7 +63,7 @@ namespace DesktopApp
         {
             if (textBox2.Text.Equals("") || !Utils.CheckInputPath(textBox2.Text))
             {
-                MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn!!", "Thông báo người dùng");
+                MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn !", "Thông báo");
                 return;
             }
             else
@@ -77,45 +75,30 @@ namespace DesktopApp
                 }
                 catch (FileNotFoundException q)
                 {
-                    MessageBox.Show("File không tồn tại!!", "Thông báo người dùng");
+                    MessageBox.Show("File không tồn tại !", "Thông báo");
                     return;
                 }
                 catch (IOException q)
                 {
-                    MessageBox.Show("File đang được mở bởi người dùng! Vui lòng tắt file trước khi upload!!", "Thông báo người dùng");
+                    MessageBox.Show("File đang được mở bởi người dùng ! Vui lòng tắt file trước khi upload !", "Thông báo");
                     return;
                 }
             }
             {
-
-                //GenerateP12 generateP12 = new GenerateP12();
-                //ManageKey generateKeypair = new ManageKey();
-                //ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
                 ExcelExecution excelExecution = new ExcelExecution();
 
-                ////byte[] browseFile = File.ReadAllBytes(textBox2.Text);
-                ////string subjectDN = generateKeypair.createInformation();
-                ////generateKeypair.generateKey(2048);
-
-                ////TEST
-                ////X509Certificate endEntityCert = Utils.readCertificateFromFile("file/cert.cer");
-                ////X509Certificate CertChain = Utils.readCertificateFromFile("file/mobileidcert.cer");
-                ////string EndCertDecoded = Utils.convertCertToBase64(endEntityCert);
-                ////string CertChainDecoded = Utils.convertCertToBase64(CertChain);
-
-                ////LIVE
                 string EndCertDecoded = excelExecution.ImportExcel(textBox2.Text, 2);
                 string CertChainDecoded = excelExecution.ImportExcel(textBox2.Text, 3);
 
                 int level = Utils.CheckLevelOfCertificate(CertChainDecoded);
-                //Level 1
+                //Cert chain 1 layer
                 if ( level == 0)
                 {
                     this.CreateP12Level1(EndCertDecoded, CertChainDecoded);
                 }
-                else //Level >1
+                else  //Cert chain 2 layer
                 {
-                    string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);//Contain blank
+                    string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);     //Contain blank
                     int pos = 0;
                     string[] base64Chain_2 = new string[base64Chain.Length];
                     foreach(string s in base64Chain)
@@ -128,17 +111,6 @@ namespace DesktopApp
                     }
                     this.CreateP12LevelGT1(level, EndCertDecoded, base64Chain_2);
                 }
-
-                //X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(EndCertDecoded));
-                //X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(CertChainDecoded));
-                //AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
-                //RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
-
-                //string passWord = Utils.CreatePassword(8);
-                //generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
-
-                //File.WriteAllText("file/passwordP12.txt", passWord);
-                //MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
             }
         }
 
@@ -155,36 +127,32 @@ namespace DesktopApp
             {
                 file = openFileDialog.FileName;
                 textBox2.Text = file;
-                MessageBox.Show("Browse excel file successfully !", "Thông báo người dùng");
+                MessageBox.Show("Browse excel file thành công !", "Thông báo");
             }
         }
 
         private void CreateP12Level1(string base64Cert, string base64Chain)
         {
-            //Contructor
             GenerateP12 generateP12 = new GenerateP12();
             ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
-
-            //Handle                        
+                      
             X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
             X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(base64Chain));
             AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
             RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
 
             string passWord = Utils.CreatePassword(8);
-            generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey, "file/KeyStoreP12_1cap.p12", "TESTP12", passWord);
+            generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
 
             File.WriteAllText("file/passwordP12.txt", passWord);
-            MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng 1 cấp");
+            MessageBox.Show("Cấp phát Keystore thành công !", "Thông báo");
         }
 
         private void CreateP12LevelGT1(int level, string base64Cert, string[] base64Chain)
         {
-            //Contructor
             GenerateP12 generateP12 = new GenerateP12();
             ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
 
-            //Handle
             X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
 
             //Create Array CertChain                        
@@ -195,17 +163,15 @@ namespace DesktopApp
                     continue;
                 X509Certificate temp = new X509Certificate(Convert.FromBase64String(base64Chain[i]));
                 certChain.Add(temp);
-            }
-            //Read from hidden file a get PrivateKey            
+            }          
             AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
             RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
 
-            //
             string passWord = Utils.CreatePassword(8);
-            generateP12.pkcs12Keystore(x509cert_1, certChain, privatekey, "file/KeyStoreP12_capnhieu.p12", "TESTP12", passWord);
+            generateP12.pkcs12Keystore(x509cert_1, certChain, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
 
             File.WriteAllText("file/passwordP12.txt", passWord);
-            MessageBox.Show("Generate PKCS12 Keystore Successfully !", "Thông báo người dùng");
+            MessageBox.Show("Cấp phát Keystore thành công !", "Thông báo");
         }
     }
 }
