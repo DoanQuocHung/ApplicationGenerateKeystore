@@ -74,7 +74,6 @@ namespace TokenService
 
         public static int CheckLevelOfCertificate(String input)
         {
-            int level = 0;
             string[] delimiter = {"BEGIN"};
             string[] tokens = input.Split(delimiter, StringSplitOptions.None);            
             return tokens.Length - 1;
