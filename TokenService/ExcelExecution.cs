@@ -31,12 +31,11 @@ namespace TokenService
 
             //Số lượng CSR cần sinh
             int Num = Int32.Parse(countCSR);
-            int num = 4;
             for (int i = 1; i <= Num; i++)
             {
                 IRow row2 = sheet1.CreateRow(i);
                 row2.CreateCell(0).SetCellValue(i);
-                row2.CreateCell(1).SetCellValue("" + csr + "");     //SetCellValue("\"" + csr + "\"")
+                row2.CreateCell(1).SetCellValue("" + csr + "");
                 row2.CreateCell(2).SetCellValue("\"" + "\"");
                 row2.CreateCell(3).SetCellValue("\"" + "\"");
 
@@ -53,7 +52,6 @@ namespace TokenService
             FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
 
             workbook = new XSSFWorkbook(fs);
-
             ISheet sheet = workbook.GetSheetAt(0);
 
             //SINGLE
@@ -110,5 +108,6 @@ namespace TokenService
             String chars = "[" + String.Concat(charsToRemove) + "]";
             return Regex.Replace(str, chars, String.Empty);
         }
+
     }
 }
