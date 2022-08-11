@@ -163,7 +163,7 @@ namespace DesktopApp
                     continue;
                 X509Certificate temp = new X509Certificate(Convert.FromBase64String(base64Chain[i]));
                 certChain.Add(temp);
-            }          
+            }
             AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
             RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
 
