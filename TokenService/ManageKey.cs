@@ -16,8 +16,7 @@ using System.Threading.Tasks;
 namespace TokenService
 {
     public class ManageKey
-    {
-        private string version = 2;
+    {        
         private AsymmetricCipherKeyPair key;
         private Pkcs10CertificationRequest CSR;
 
@@ -33,13 +32,12 @@ namespace TokenService
 
         public String createInformation()
         {
-            String CN = "Nguyen Van B";     //Common Name - Domain name
-            String OU = "Cong Ty ABC";      //Organizational Unit Name
-            String O = "Cong Ty ABC";       //Organization Name
-            String L = "Quan 1";            //Location
-            String S = "TPHCM";             //State
-            String C = "VN";                //Country
-            //String P = "PrivateKey";
+            String CN = Constant.CN;    
+            String OU = Constant.OU;
+            String O = Constant.O;
+            String L = Constant.L;
+            String S = Constant.S;
+            String C = Constant.C;
             String result = "CN=" + CN + ",OU=" + OU + ",O=" + O + ",C=" + C + ",L=" + L + ",ST=" + S;
             return result;
         }
@@ -52,31 +50,7 @@ namespace TokenService
             var keyGenerationParameters = new KeyGenerationParameters(random, keySize);
             var keyPairGenerator = new RsaKeyPairGenerator();
             keyPairGenerator.Init(keyGenerationParameters);
-            key = keyPairGenerator.GenerateKeyPair();
-
-            //Ghi vao file
-            //StringBuilder CSRPem = new StringBuilder();
-            //PemWriter CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
-            //CSRPemWriter.WriteObject(key.Public);
-            //CSRPemWriter.Writer.Flush();
-            //string CSRtext = CSRPem.ToString();
-
-            //using (StreamWriter f = new StreamWriter(@"file/public.pem"))  //txt
-            //{
-            //    f.Write(CSRtext);
-            //}
-
-            //CSRPem = new StringBuilder();
-            //CSRPemWriter = new PemWriter(new StringWriter(CSRPem));
-            //CSRPemWriter.WriteObject(key.Private);
-            //CSRPemWriter.Writer.Flush();
-
-            //CSRtext = CSRPem.ToString();
-
-            //using (StreamWriter f = new StreamWriter(@"file/private.pem"))  //txt
-            //{
-            //    f.Write(CSRtext);
-            //}
+            key = keyPairGenerator.GenerateKeyPair();            
         }
 
         public string generateCSR(String subjectDN, String algorithm)

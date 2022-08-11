@@ -24,22 +24,18 @@ namespace TokenService
             var a = (RsaKeyParameters)key.Public;
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
-            string result = modulus.ToString() + ";" + exponent.ToString();
-            //Console.WriteLine("resultPublic:" + result);
+            string result = modulus.ToString() + ";" + exponent.ToString();            
 
             var b = (RsaKeyParameters)key.Private;
             BigInteger modulus2 = b.Modulus;
             BigInteger exponent2 = b.Exponent;
-            string result2 = modulus2.ToString() + ";" + exponent2.ToString();
-            //Console.WriteLine("resultPrivate:" + result2);
-
+            string result2 = modulus2.ToString() + ";" + exponent2.ToString();            
             return this.EncryptPrivateKey(result, result2);
         }
 
         private string EncryptPrivateKey(string publickey, string plainText)
         {
-            string key = this.HashMD5(publickey);
-            //Console.WriteLine("HashKey:" + key);
+            string key = this.HashMD5(publickey);            
             string keymain = this.concatKey_Key(key);
 
             byte[] iv = new byte[16];
@@ -77,9 +73,10 @@ namespace TokenService
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
             string result = modulus.ToString() + ";" + exponent.ToString();
+
             //Hash MD5 key
             string key = this.HashMD5(result);
-            //Console.WriteLine("HashKey:" + key);
+            
             //Read from file and get cipherText
             string cipher_privatekey = this.readFromFile(key);
 
@@ -129,7 +126,6 @@ namespace TokenService
                 byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(publickey);
                 byte[] hashBytes = md5.ComputeHash(inputBytes);
 
-
                 // Convert the byte array to hexadecimal string prior to .NET 5
                 StringBuilder sb = new System.Text.StringBuilder();
                 for (int i = 0; i < hashBytes.Length; i++)
@@ -162,8 +158,7 @@ namespace TokenService
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
             string path = "file/test.tmp";
-            string result = key + ":" + cipher;
-            //Console.WriteLine("Append:" + result);
+            string result = key + ":" + cipher;            
             File.AppendAllText(path, result + "\n");
             File.SetAttributes(path, FileAttributes.Hidden);
         }

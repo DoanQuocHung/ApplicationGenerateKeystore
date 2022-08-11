@@ -38,7 +38,7 @@ namespace TokenService
                     Password.ToCharArray(),
                     new SecureRandom(new CryptoApiRandomGenerator())
                     );
-                //certFile.Close();
+                certFile.Close();
             }
 
 
@@ -68,14 +68,13 @@ namespace TokenService
                     Password.ToCharArray(),
                     new SecureRandom(new CryptoApiRandomGenerator())
                     );
-                //certFile.Close();
+                certFile.Close();
             }
         }
         public void pkcs12Keystore(X509Certificate newCert, List<X509Certificate> listCertChain, AsymmetricKeyParameter kp, string FilePath, string CertAlias, string Password)
         {
             var newStore = new Pkcs12Store();
-            var certEntry = new X509CertificateEntry(newCert);
-            //var certChain = new X509CertificateEntry(CertChain);
+            var certEntry = new X509CertificateEntry(newCert);            
             X509CertificateEntry[] entry = new X509CertificateEntry[listCertChain.Count + 1];
             int position = 0;
             entry[0] = certEntry; position++;
@@ -103,7 +102,7 @@ namespace TokenService
                     Password.ToCharArray(),
                     new SecureRandom(new CryptoApiRandomGenerator())
                     );
-                //certFile.Close();
+                certFile.Close();
             }
         }
     }
