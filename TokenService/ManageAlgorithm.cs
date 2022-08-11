@@ -158,7 +158,7 @@ namespace TokenService
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
             string path = "file/test.tmp";
-            string result = key + ":" + cipher;            
+            string result = key + ":" + cipher;
             File.AppendAllText(path, result + "\n");
             File.SetAttributes(path, FileAttributes.Hidden);
         }
@@ -184,10 +184,11 @@ namespace TokenService
             }
             if (result == null)
                 return null;
+            
             //Get object and delete row            
-            //File.Delete(path);
-            //File.AppendAllText(path, temp);
-            //File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
+            File.Delete(path);
+            File.AppendAllText(path, temp);
+            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
             return result;
         }
 

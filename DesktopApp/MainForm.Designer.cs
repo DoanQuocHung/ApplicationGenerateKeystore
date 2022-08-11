@@ -52,6 +52,7 @@ namespace DesktopApp
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.textBox8 = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +60,7 @@ namespace DesktopApp
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(202)))), ((int)(((byte)(225)))), ((int)(((byte)(255)))));
+            this.panel1.Controls.Add(this.textBox8);
             this.panel1.Controls.Add(this.label9);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.textBox7);
@@ -273,6 +275,14 @@ namespace DesktopApp
             this.label9.TabIndex = 13;
             this.label9.Text = "Citizen ID";
             // 
+            // textBox8
+            // 
+            this.textBox8.Font = new System.Drawing.Font("Times New Roman", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox8.Location = new System.Drawing.Point(628, 256);
+            this.textBox8.Name = "textBox8";
+            this.textBox8.Size = new System.Drawing.Size(261, 33);
+            this.textBox8.TabIndex = 14;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -317,6 +327,7 @@ namespace DesktopApp
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox textBox8;
     }
 }
 
