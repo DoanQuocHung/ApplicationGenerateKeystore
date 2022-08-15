@@ -24,12 +24,12 @@ namespace TokenService
             var a = (RsaKeyParameters)key.Public;
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
-            string result = modulus.ToString() + ";" + exponent.ToString();            
+            string result = modulus.ToString() + ";" + exponent.ToString();
 
             var b = (RsaKeyParameters)key.Private;
             BigInteger modulus2 = b.Modulus;
             BigInteger exponent2 = b.Exponent;
-            string result2 = modulus2.ToString() + ";" + exponent2.ToString();            
+            string result2 = modulus2.ToString() + ";" + exponent2.ToString();
             return this.EncryptPrivateKey(result, result2);
         }
 
@@ -80,7 +80,7 @@ namespace TokenService
             //Read from file and get cipherText
             string cipher_privatekey = this.readFromFile(key);
 
-            return this.DecryptPrivateKey(key, cipher_privatekey);
+            return this.DecryptPrivateKey(key, cipher_privatekey); 
         }
 
         private RsaKeyParameters DecryptPrivateKey(string publickey_afterhash, string cipherText)

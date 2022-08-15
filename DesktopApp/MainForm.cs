@@ -128,7 +128,7 @@ namespace DesktopApp
                 file = openFileDialog.FileName;
                 textBox2.Text = file;
                 MessageBox.Show("Browse excel file thành công !", "Thông báo");
-            }
+            }                                                                             
         }
 
         private void CreateP12Level1(string base64Cert, string base64Chain)
@@ -155,7 +155,7 @@ namespace DesktopApp
 
             X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
 
-            //Create Array CertChain                        
+            //Create Array CertChain
             List<X509Certificate> certChain = new List<X509Certificate>();
             for (int i = 0; i < level; i++)
             {
@@ -172,6 +172,7 @@ namespace DesktopApp
 
             File.WriteAllText("file/passwordP12.txt", passWord);
             MessageBox.Show("Cấp phát Keystore thành công !", "Thông báo");
+
         }
     }
 }
