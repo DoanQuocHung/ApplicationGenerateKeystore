@@ -20,7 +20,9 @@ namespace TokenService
         public string EncryptPrivateKey(AsymmetricCipherKeyPair key)
         {
             if (key == null)
+            {
                 return null;
+            }
             var a = (RsaKeyParameters)key.Public;
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
@@ -35,9 +37,8 @@ namespace TokenService
 
         private string EncryptPrivateKey(string publickey, string plainText)
         {
-            string key = this.HashMD5(publickey);            
+            string key = this.HashMD5(publickey);
             string keymain = this.concatKey_Key(key);
-
             byte[] iv = new byte[16];
             byte[] array;
 
@@ -45,7 +46,6 @@ namespace TokenService
             {
                 aes.Key = Encoding.UTF8.GetBytes(keymain);
                 aes.IV = iv;
-
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -56,7 +56,6 @@ namespace TokenService
                         {
                             streamWriter.Write(plainText);
                         }
-
                         array = memoryStream.ToArray();
                     }
                 }

@@ -18,16 +18,24 @@ namespace TokenService
         {
             IWorkbook workbook = new XSSFWorkbook();
             ISheet sheet1 = workbook.CreateSheet("ToolResult");
-            sheet1.SetColumnWidth(0, 1000);
-            sheet1.SetColumnWidth(1, 12000);
-            sheet1.SetColumnWidth(2, 12000);
-            sheet1.SetColumnWidth(3, 12000);
+            sheet1.SetColumnWidth(0, 6000);
+            sheet1.SetColumnWidth(1, 5000);
+            sheet1.SetColumnWidth(2, 4000);
+            sheet1.SetColumnWidth(3, 5000);
+            sheet1.SetColumnWidth(4, 4000);
+            sheet1.SetColumnWidth(5, 9000);
+            sheet1.SetColumnWidth(6, 8000);
+            sheet1.SetColumnWidth(7, 6000);
 
             IRow row1 = sheet1.CreateRow(0);
-            row1.CreateCell(0).SetCellValue("STT");
-            row1.CreateCell(1).SetCellValue("CSR");
-            row1.CreateCell(2).SetCellValue("Certificate");
-            row1.CreateCell(3).SetCellValue("Cert Chain");
+            row1.CreateCell(0).SetCellValue("EmailAddress");
+            row1.CreateCell(1).SetCellValue("TelephoneNumber");
+            row1.CreateCell(2).SetCellValue("Locality");
+            row1.CreateCell(3).SetCellValue("StateProvince");
+            row1.CreateCell(4).SetCellValue("Country");
+            row1.CreateCell(5).SetCellValue("CustomerPhoneNumber");
+            row1.CreateCell(6).SetCellValue("CustomerEmail");
+            row1.CreateCell(7).SetCellValue("CSR");
 
             //Số lượng CSR cần sinh
             int Num = Int32.Parse(countCSR);
@@ -38,6 +46,10 @@ namespace TokenService
                 row2.CreateCell(1).SetCellValue("" + csr + "");
                 row2.CreateCell(2).SetCellValue("\"" + "\"");
                 row2.CreateCell(3).SetCellValue("\"" + "\"");
+                row2.CreateCell(4).SetCellValue("\"" + "\"");
+                row2.CreateCell(5).SetCellValue("\"" + "\"");
+                row2.CreateCell(6).SetCellValue("\"" + "\"");
+                row2.CreateCell(7).SetCellValue("\"" + "\"");
 
             }
             FileStream sw = File.Create(fileName);    //file/ExportExcelCSR.xlsx

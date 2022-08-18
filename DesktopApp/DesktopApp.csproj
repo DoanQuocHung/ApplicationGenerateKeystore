@@ -122,16 +122,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnterprisePanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EnterprisePanel.Designer.cs">
+      <DependentUpon>EnterprisePanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="PersonalPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PersonalPanel.Designer.cs">
+      <DependentUpon>PersonalPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StaffPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StaffPanel.Designer.cs">
+      <DependentUpon>StaffPanel.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="EnterprisePanel.resx">
+      <DependentUpon>EnterprisePanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PersonalPanel.resx">
+      <DependentUpon>PersonalPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -142,6 +166,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="StaffPanel.resx">
+      <DependentUpon>StaffPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="DesktopApp_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

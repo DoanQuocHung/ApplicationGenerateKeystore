@@ -22,6 +22,49 @@ namespace DesktopApp
             InitializeComponent();
         }
 
+        private void combobox1_Click(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void button4_Click(object sender, System.EventArgs e)
+        {
+            object seclecteCombobox = comboBox1.SelectedItem;
+            string resultCombobox = Convert.ToString(seclecteCombobox);
+
+            if (resultCombobox.Equals("PERSONAL"))
+            {
+                MessageBox.Show("Loại chứng thư số vừa chọn: PERSONAL");
+                PersonalPanel personalPanel = new PersonalPanel();
+                personalPanel.Show();
+            }
+            else if (resultCombobox.Equals("ENTERPRISE"))
+            {
+                MessageBox.Show("Loại chứng thư số vừa chọn: ENTERPRISE");
+                EnterprisePanel enterprisePanel = new EnterprisePanel();
+                enterprisePanel.Show();
+            }
+            else if (resultCombobox.Equals("STAFF"))
+            {
+                MessageBox.Show("Loại chứng thư số vừa chọn: STAFF");
+                StaffPanel staffPanel = new StaffPanel();
+                staffPanel.Show();
+            }
+            else
+            {
+                MessageBox.Show("Chưa chọn loại Chứng thư số");
+            }
+        }
+
+        public static void comboboxHandle(int type)
+        {
+            if (type == 1)
+            {
+                PersonalPanel personalPanel = new PersonalPanel();
+                personalPanel.Show();
+            }
+        }
+
         private void button1_Click(object sender, System.EventArgs e)
         {
             string CSRnumber = textBox1.Text;
@@ -43,7 +86,6 @@ namespace DesktopApp
                 storePrivateKey.EncryptPrivateKey(generateKeypair.getKey());
 
                 ExcelExecution writeExcelFile = new ExcelExecution();
-
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Title = "Export Excel File";
                 saveFileDialog.FileName = "ExportExcelCSR.Dialog";
@@ -91,8 +133,8 @@ namespace DesktopApp
                 string CertChainDecoded = excelExecution.ImportExcel(textBox2.Text, 3);
 
                 int level = Utils.CheckLevelOfCertificate(CertChainDecoded);
-                //Cert chain 1 layer
-                if ( level == 0)
+                
+                if ( level == 0)    //Cert chain 1 layer
                 {
                     this.CreateP12Level1(EndCertDecoded, CertChainDecoded);
                 }
@@ -128,7 +170,7 @@ namespace DesktopApp
                 file = openFileDialog.FileName;
                 textBox2.Text = file;
                 MessageBox.Show("Browse excel file thành công !", "Thông báo");
-            }                                                                             
+            }
         }
 
         private void CreateP12Level1(string base64Cert, string base64Chain)
