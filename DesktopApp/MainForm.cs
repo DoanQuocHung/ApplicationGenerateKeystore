@@ -17,9 +17,16 @@ namespace DesktopApp
 {
     public partial class MainForm : Form
     {
+        private readonly MainForm mainForm;
+
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        public MainForm(MainForm mainForm)
+        {
+            this.mainForm = mainForm;
         }
 
         private void combobox1_Click(object sender, System.EventArgs e)
@@ -56,49 +63,33 @@ namespace DesktopApp
             }
         }
 
-        public static void comboboxHandle(int type)
-        {
-            if (type == 1)
-            {
-                PersonalPanel personalPanel = new PersonalPanel();
-                personalPanel.Show();
-            }
-        }
-
         private void button1_Click(object sender, System.EventArgs e)
         {
-            string CSRnumber = textBox1.Text;
-            if (!Utils.CheckInputNumber(CSRnumber))
+            string CSRnumber = textBoxSum.Text;
+            ManageKey generateKeypair = new ManageKey();
+            ManageAlgorithm storePrivateKey = new ManageAlgorithm();
+
+            //Create CSRS
+            string subjectDN = generateKeypair.createInformation();
+            generateKeypair.generateKey(2048);
+            string CSR = generateKeypair.generateCSR(subjectDN, null);
+
+            //Create storage to store PrivateKey
+            storePrivateKey.EncryptPrivateKey(generateKeypair.getKey());
+
+            ExcelExecution writeExcelFile = new ExcelExecution();
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Export Excel File";
+            saveFileDialog.FileName = "ExportExcelCSR.Dialog";
+            saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx";
+            saveFileDialog.FilterIndex = 2;
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("Chưa nhập dữ liệu hoặc dữ liệu không hợp lệ (kiểu số)", "Thông báo");
+                writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
             }
-            else
-            {
-                ManageKey generateKeypair = new ManageKey();
-                ManageAlgorithm storePrivateKey = new ManageAlgorithm();
 
-                //Create CSRS
-                string subjectDN = generateKeypair.createInformation();
-                generateKeypair.generateKey(2048);
-                string CSR = generateKeypair.generateCSR(subjectDN, null);
-
-                //Create storage to store PrivateKey
-                storePrivateKey.EncryptPrivateKey(generateKeypair.getKey());
-
-                ExcelExecution writeExcelFile = new ExcelExecution();
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Export Excel File";
-                saveFileDialog.FileName = "ExportExcelCSR.Dialog";
-                saveFileDialog.Filter = "Excel Files (*.xlsx)|*.xlsx;*.xlsx";
-                saveFileDialog.FilterIndex = 2;
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
-                }
-
-                MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nSinh CSR và lưu file excel thành công !", "Thông báo");
-            }
+            MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nSinh CSR và lưu file excel thành công !", "Thông báo");
         }
 
         private void button2_Click(object sender, System.EventArgs e)
@@ -133,8 +124,8 @@ namespace DesktopApp
                 string CertChainDecoded = excelExecution.ImportExcel(textBox2.Text, 3);
 
                 int level = Utils.CheckLevelOfCertificate(CertChainDecoded);
-                
-                if ( level == 0)    //Cert chain 1 layer
+
+                if (level == 0)    //Cert chain 1 layer
                 {
                     this.CreateP12Level1(EndCertDecoded, CertChainDecoded);
                 }
@@ -143,9 +134,9 @@ namespace DesktopApp
                     string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);     //Contain blank
                     int pos = 0;
                     string[] base64Chain_2 = new string[base64Chain.Length];
-                    foreach(string s in base64Chain)
+                    foreach (string s in base64Chain)
                     {
-                        if( !Utils.isBlank(s))
+                        if (!Utils.isBlank(s))
                         {
                             base64Chain_2[pos] = s;
                             pos++;
@@ -177,7 +168,7 @@ namespace DesktopApp
         {
             GenerateP12 generateP12 = new GenerateP12();
             ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
-                      
+
             X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
             X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(base64Chain));
             AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
@@ -202,7 +193,9 @@ namespace DesktopApp
             for (int i = 0; i < level; i++)
             {
                 if (base64Chain[i] == null)
+                {
                     continue;
+                }
                 X509Certificate temp = new X509Certificate(Convert.FromBase64String(base64Chain[i]));
                 certChain.Add(temp);
             }

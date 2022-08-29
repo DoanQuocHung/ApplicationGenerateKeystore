@@ -36,7 +36,7 @@ namespace DesktopApp
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxSum = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -56,7 +56,7 @@ namespace DesktopApp
             this.panel1.Controls.Add(this.comboBox1);
             this.panel1.Controls.Add(this.label10);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.textBox1);
+            this.panel1.Controls.Add(this.textBoxSum);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.label1);
             this.panel1.Location = new System.Drawing.Point(12, 12);
@@ -110,15 +110,15 @@ namespace DesktopApp
             this.label3.TabIndex = 3;
             this.label3.Text = "Số lượng đã yêu cầu";
             // 
-            // textBox1
+            // textBoxSum
             // 
-            this.textBox1.Font = new System.Drawing.Font("Times New Roman", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(1104, 23);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(90, 33);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "1";
+            this.textBoxSum.Font = new System.Drawing.Font("Times New Roman", 13.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBoxSum.Location = new System.Drawing.Point(1104, 23);
+            this.textBoxSum.Name = "textBoxSum";
+            this.textBoxSum.ReadOnly = true;
+            this.textBoxSum.Size = new System.Drawing.Size(90, 33);
+            this.textBoxSum.TabIndex = 2;
+            this.textBoxSum.Text = "0";
             // 
             // button1
             // 
@@ -235,7 +235,7 @@ namespace DesktopApp
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxSum;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox2;

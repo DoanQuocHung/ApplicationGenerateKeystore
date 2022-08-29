@@ -78,7 +78,6 @@ namespace TokenService
                 string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
                 lines = lines.Where(w => w != lines[0]).ToArray();
                 lines = lines.Take(lines.Count() - 1).ToArray();
-                //string[] FinalResult = lines.Skip(lines.Length - 1).ToArray();
 
                 string rs = "";
                 foreach (string line in lines)

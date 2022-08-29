@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.panel3 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.textBox11 = new System.Windows.Forms.TextBox();
             this.textBox10 = new System.Windows.Forms.TextBox();
@@ -51,8 +53,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,6 +87,27 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1166, 513);
             this.panel3.TabIndex = 24;
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(822, 449);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(155, 44);
+            this.button2.TabIndex = 30;
+            this.button2.Text = "Xác nhận";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(994, 449);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(155, 44);
+            this.button1.TabIndex = 29;
+            this.button1.Text = "Hủy";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label3
             // 
@@ -297,26 +318,6 @@
             this.label6.Size = new System.Drawing.Size(75, 22);
             this.label6.TabIndex = 9;
             this.label6.Text = "Tổ chức";
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(822, 449);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(155, 44);
-            this.button2.TabIndex = 30;
-            this.button2.Text = "Xác nhận";
-            this.button2.UseVisualStyleBackColor = true;
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(994, 449);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(155, 44);
-            this.button1.TabIndex = 29;
-            this.button1.Text = "Hủy";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // EnterprisePanel
             // 

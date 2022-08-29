@@ -20,6 +20,7 @@ namespace TokenService
             Regex regex = new Regex(pattern);
             return Regex.IsMatch(input, pattern);
         }
+
         public static Boolean CheckInputPath(string input)
         {
             string pattern = @"^[0-9a-zA-Z_\-.\\:\s]+$";
@@ -38,9 +39,9 @@ namespace TokenService
         }
 
         public static string UsingRegexDeleteNewLine(string input)
-        {            
+        {
             string replacewith = "";
-            return input.Replace("\n",replacewith);            
+            return input.Replace("\n", replacewith);
         }
 
         public static String convertCertToBase64(X509Certificate certificate)
@@ -62,7 +63,7 @@ namespace TokenService
             {
                 // Add the entry for each file
                 zip.CreateEntryFromFile(file, Path.GetFileName(file), CompressionLevel.Optimal);
-            }            
+            }
             zip.Dispose();
         }
         public static Boolean CheckFormatPEMOfString(String input)
@@ -78,7 +79,7 @@ namespace TokenService
         public static int CheckLevelOfCertificate(String input)
         {
             string[] delimiter = {"BEGIN"};
-            string[] tokens = input.Split(delimiter, StringSplitOptions.None);            
+            string[] tokens = input.Split(delimiter, StringSplitOptions.None);
             return tokens.Length - 1;
         }
 
@@ -87,7 +88,7 @@ namespace TokenService
             string pattern = @"[-]*(BEGIN|END|begin|end)[ ]+(CERTIFICATE|certificate)[-]*";
             string[] delimiter = { "*" };
             string temp = Regex.Replace(peminput, pattern, "*");
-            string[] tokens = temp.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);            
+            string[] tokens = temp.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
             return tokens;
         }
 
