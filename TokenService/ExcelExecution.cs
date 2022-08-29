@@ -61,30 +61,54 @@ namespace TokenService
         public string ImportExcel(string fileName, int cellColumn)
         {
             IWorkbook workbook;
-            FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            FileStream fs = null;
+            try
+            {
+                fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            }
+            catch (FileNotFoundException q)
+            {
+                MessageBox.Show("File không tồn tại!!", "Thông báo người dùng");
+                return null;
+            }
+            catch (IOException q)
+            {
+                MessageBox.Show("File đang được mở bởi người dùng! Vui lòng tắt file trước khi upload!!", "Thông báo người dùng");
+                return null;
+            }
 
             workbook = new XSSFWorkbook(fs);
+
             ISheet sheet = workbook.GetSheetAt(0);
 
             //SINGLE
             IRow curRow = sheet.GetRow(1);
-            string cellValue = curRow.GetCell(cellColumn).StringCellValue.Trim();
 
+            string cellValue = curRow.GetCell(cellColumn).StringCellValue.Trim();
+            if (Utils.isBlank(cellValue))
+            {
+                MessageBox.Show("File không thỏa điều kiện để sinh khóa!!", "Thông báo người dùng");
+                return null;
+            }
+            cellValue = cellValue.Trim();
             List<char> charsToRemove = new List<char>() { '\"' };
             cellValue = Filter(cellValue, charsToRemove);
             //Level1
             if (Utils.CheckFormatPEMOfString(cellValue) && Utils.CheckLevelOfCertificate(cellValue) == 1)
-            {                
-                string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
-                lines = lines.Where(w => w != lines[0]).ToArray();
-                lines = lines.Take(lines.Count() - 1).ToArray();
+            {
+                //string[] lines = cellValue.Split(Environment.NewLine.ToCharArray()).ToArray();
+                //lines = lines.Where(w => w != lines[0]).ToArray();
+                //lines = lines.Take(lines.Count() - 1).ToArray();
+                ////string[] FinalResult = lines.Skip(lines.Length - 1).ToArray();
 
-                string rs = "";
-                foreach (string line in lines)
-                {
-                    rs += line;
-                }
-                return rs;
+                //string rs = "";
+                //foreach (string line in lines)
+                //{
+                //    rs += line;
+                //}
+                //return rs;
+                cellValue = Filter(cellValue, charsToRemove);
+                return cellValue;
             }
             //Level Greater than 1
             else if (Utils.CheckFormatPEMOfString(cellValue) && Utils.CheckLevelOfCertificate(cellValue) != 1)
@@ -92,11 +116,7 @@ namespace TokenService
                 cellValue = Filter(cellValue, charsToRemove);
                 return cellValue;
             }
-            else
-            {
-                return cellValue;
-            }
-
+            return cellValue;
 
             //MULTIPLE
             //for (int i = 2; i <= rowCount; i++)

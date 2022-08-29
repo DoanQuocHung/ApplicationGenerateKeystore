@@ -2,6 +2,8 @@
 using Org.BouncyCastle.Crypto;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Math;
+using Org.BouncyCastle.OpenSsl;
+using Org.BouncyCastle.Security;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,25 +22,23 @@ namespace TokenService
         public string EncryptPrivateKey(AsymmetricCipherKeyPair key)
         {
             if (key == null)
-            {
                 return null;
-            }
             var a = (RsaKeyParameters)key.Public;
             BigInteger modulus = a.Modulus;
             BigInteger exponent = a.Exponent;
             string result = modulus.ToString() + ";" + exponent.ToString();
 
-            var b = (RsaKeyParameters)key.Private;
-            BigInteger modulus2 = b.Modulus;
-            BigInteger exponent2 = b.Exponent;
-            string result2 = modulus2.ToString() + ";" + exponent2.ToString();
-            return this.EncryptPrivateKey(result, result2);
+            RSACryptoServiceProvider rsaProvider = new RSACryptoServiceProvider();
+            RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaPrivateCrtKeyParameters)key.Private);
+            rsaProvider.ImportParameters(rsaParams);
+            return this.EncryptPrivateKey(result, rsaProvider);
         }
 
-        private string EncryptPrivateKey(string publickey, string plainText)
+        private string EncryptPrivateKey(string publickey, RSACryptoServiceProvider rsaProvider)
         {
             string key = this.HashMD5(publickey);
             string keymain = this.concatKey_Key(key);
+
             byte[] iv = new byte[16];
             byte[] array;
 
@@ -46,6 +46,7 @@ namespace TokenService
             {
                 aes.Key = Encoding.UTF8.GetBytes(keymain);
                 aes.IV = iv;
+
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
                 using (MemoryStream memoryStream = new MemoryStream())
@@ -54,7 +55,15 @@ namespace TokenService
                     {
                         using (StreamWriter streamWriter = new StreamWriter((Stream)cryptoStream))
                         {
-                            streamWriter.Write(plainText);
+
+                            var kp = Org.BouncyCastle.Security.DotNetUtilities.GetKeyPair(rsaProvider);
+                            using (var sw = new System.IO.StringWriter())
+                            {
+                                var pw = new Org.BouncyCastle.OpenSsl.PemWriter(sw);
+                                pw.WriteObject(kp.Private);
+                                var pem = sw.ToString();
+                                streamWriter.Write(pem);
+                            }
                         }
                         array = memoryStream.ToArray();
                     }
@@ -64,8 +73,8 @@ namespace TokenService
             this.writeToFile(key, result);
             return result;
         }
-        
-        public RsaKeyParameters DecryptPrivateKey(AsymmetricKeyParameter keyPublic)
+
+        public AsymmetricCipherKeyPair DecryptPrivateKey(AsymmetricKeyParameter keyPublic)
         {
             //Get modulus + exponent and convert to string
             var a = (RsaKeyParameters)keyPublic;
@@ -75,14 +84,14 @@ namespace TokenService
 
             //Hash MD5 key
             string key = this.HashMD5(result);
-            
+
             //Read from file and get cipherText
             string cipher_privatekey = this.readFromFile(key);
 
-            return this.DecryptPrivateKey(key, cipher_privatekey); 
+            return this.DecryptPrivateKey(key, cipher_privatekey);
         }
 
-        private RsaKeyParameters DecryptPrivateKey(string publickey_afterhash, string cipherText)
+        private AsymmetricCipherKeyPair DecryptPrivateKey(string publickey_afterhash, string cipherText)
         {
             //Hash MD5 to get key            
             string key = this.concatKey_Key(publickey_afterhash);
@@ -94,7 +103,7 @@ namespace TokenService
             using (Aes aes = Aes.Create())
             {
                 aes.Key = Encoding.UTF8.GetBytes(key);
-                aes.IV = iv;                
+                aes.IV = iv;
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
                 using (MemoryStream memoryStream = new MemoryStream(buffer))
@@ -103,18 +112,20 @@ namespace TokenService
                     {
                         using (StreamReader streamReader = new StreamReader((Stream)cryptoStream))
                         {
-                            result =  streamReader.ReadToEnd();
+                            result = streamReader.ReadToEnd();
                         }
                     }
                 }
             }
-            //Create Private Key from data
-            String[] q = result.Split(';');
-
-            BigInteger modulus = new BigInteger(q[0]);
-            BigInteger exponent = new BigInteger(q[1]);
-            RsaKeyParameters privateKey = new RsaKeyParameters(true,modulus,exponent);
-            return privateKey;
+            //Get Private Key from data
+            String path = "file/privateKey.pem";
+            File.WriteAllText(path, result);
+            //AsymmetricCipherKeyPair keyPair;
+            //using (var reader = File.OpenText(path))
+            //    keyPair = (AsymmetricCipherKeyPair)new PemReader(reader).ReadObject();
+            //RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaPrivateCrtKeyParameters)keyPair.Private);
+            //File.Delete(path);
+            return ImportPrivateKey2(path);
         }
 
         //Using for create hash of PublicKey
@@ -152,45 +163,50 @@ namespace TokenService
         }
 
         //Write to file Temp in System
-        private void writeToFile(String key, String cipher)
+        private void writeToFile(String name, String cipher)
         {
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
-            string path = "file/test.tmp";
-            string result = key + ":" + cipher;
-            File.AppendAllText(path, result + "\n");
+
+            string path = "file/Private";
+
+            if (!File.Exists(path))
+                System.IO.Directory.CreateDirectory(path);
             File.SetAttributes(path, FileAttributes.Hidden);
+            File.WriteAllText(path + @"/" + name + ".tmp", cipher);
         }
 
         private string readFromFile(String key)
         {
             string temporaryPath = Path.GetTempPath();
             string fileTempName = "71c4b1a70e48760f8ecb9686df55215c"; //Mobile-id MD5
-            string path = "file/test.tmp";
-            string[] line = File.ReadAllLines(path);
-            string temp = null;
-            string result = null;
-            for (int i = 0; i < line.Length; i++)
-            {
-                string[] row = line[i].Split(':');
-                string keyOfRow = row[0];
-                if (keyOfRow.Equals(key))
-                {
-                    result = row[1];
-                    continue;
-                }
-                temp += line[i] += "\n";
-            }
-            if (result == null)
-                return null;
-            
-            //Get object and delete row            
-            File.Delete(path);
-            File.AppendAllText(path, temp);
-            File.SetAttributes(path, File.GetAttributes(path) | FileAttributes.Hidden);
-            return result;
+
+            string path = "file/Private/" + key + ".tmp";
+
+            string line = File.ReadAllText(path);
+            return line;
         }
 
-       
+        public AsymmetricCipherKeyPair ImportPrivateKey2(string path)
+        {
+            AsymmetricCipherKeyPair keyPair;
+
+            using (var reader = File.OpenText(path)) // file containing RSA PKCS1 private key
+                keyPair = (AsymmetricCipherKeyPair)new PemReader(reader).ReadObject();
+            RSAParameters rsaParams = DotNetUtilities.ToRSAParameters((RsaPrivateCrtKeyParameters)keyPair.Private);
+            //return rsaParams;            
+            File.Delete("file/privateKey.pem");
+            return keyPair;
+        }
+
+        public RsaKeyParameters ImportPublicKey2(string path)
+        {
+            RsaKeyParameters keyPair;
+
+            using (var reader = File.OpenText(path)) // file containing RSA PKCS1 private key
+                keyPair = (RsaKeyParameters)new PemReader(reader).ReadObject();
+
+            return keyPair;
+        }
     }
 }

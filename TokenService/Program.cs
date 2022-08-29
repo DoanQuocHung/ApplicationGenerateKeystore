@@ -3,7 +3,9 @@ using Org.BouncyCastle.X509;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -63,10 +65,60 @@ namespace TokenService
             //IEnumerable<string> file = temp;
             //Utils.CreateZipFile(pathzip,file);
 
-            Console.WriteLine("\n===== Generate random password =====");
-            string passWord = Utils.CreatePassword(8);
-            Console.WriteLine("TEST: " + passWord);
+            //Console.WriteLine("\n===== Generate random password =====");
+            //string passWord = Utils.CreatePassword(8);
+            //Console.WriteLine("TEST: " + passWord);
 
+            Console.WriteLine("\n===== Get subject CN from cert =====");
+            string fileCerTEST = "file/testCer2408.cer";
+            string text = File.ReadAllText(fileCerTEST);
+            Console.WriteLine(text);
+
+            X509Certificate2 x509 = new X509Certificate2();
+            byte[] rawData = ReadFile(fileCerTEST);
+            x509.Import(rawData);
+
+            string subjectCN;
+            string subjectMST;
+            string mark1 = "OID.";
+            string mark2 = "CN=";
+            string mark3 = "=CMND";
+            string subjectCert = x509.Subject;
+            Console.WriteLine("Cer: " + subjectCert);
+            string[] words = subjectCert.Split(',');
+
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (words[i].Contains(mark1))
+                {
+                    string[] words_2 = words[i].Split('=');
+                    subjectMST = words_2[1].Replace(':', '-');
+                }
+                else if (words[i].Contains(mark2))
+                {
+                    //subjectCN = words[i].Remove(0, 4);
+                    string[] words_2 = words[i].Split('=');
+                    Console.WriteLine("Field cn: " + words_2[1]);
+                }
+            }
+
+            //Console.WriteLine("Subject: " + x509.SubjectName.Name);
+            //Console.Write("{0}Subject: {1}{0}", Environment.NewLine, x509.Subject);
+            //Console.Write("{0}Issuer: {1}{0}", Environment.NewLine, x509.Issuer);
+            ////Console.Write("{0}Version: {1}{0}", Environment.NewLine, x509.Version);
+            //Console.Write("{0}Valid Date: {1}{0}", Environment.NewLine, x509.NotBefore);
+            //Console.Write("{0}Expiry Date: {1}{0}", Environment.NewLine, x509.NotAfter);
+            //Console.Write("{0}Thumbprint: {1}{0}", Environment.NewLine, x509.Thumbprint);
+            //Console.Write("{0}Serial Number: {1}{0}", Environment.NewLine, x509.SerialNumber);
+        }
+        public static byte[] ReadFile(string fileName)
+        {
+            FileStream f = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            int size = (int)f.Length;
+            byte[] data = new byte[size];
+            size = f.Read(data, 0, size);
+            f.Close();
+            return data;
         }
     }
 }

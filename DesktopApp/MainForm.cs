@@ -17,6 +17,8 @@ namespace DesktopApp
 {
     public partial class MainForm : Form
     {
+        public static string subjectCN;
+        public static string subjectMST;
         private readonly MainForm mainForm;
 
         public MainForm()
@@ -88,7 +90,13 @@ namespace DesktopApp
             {
                 writeExcelFile.ExportExcel(CSR, saveFileDialog.FileName, CSRnumber);
             }
-
+            String filename = saveFileDialog.FileName;
+            filename = filename.Remove(filename.Length - 4);
+            filename = filename + "_csr.csr";
+            using (StreamWriter f = new StreamWriter(filename))
+            {
+                f.Write(CSR);
+            }
             MessageBox.Show("Số lượng Chứng thư số vừa nhập: " + CSRnumber + "\nSinh CSR và lưu file excel thành công !", "Thông báo");
         }
 
@@ -96,42 +104,28 @@ namespace DesktopApp
         {
             if (textBox2.Text.Equals("") || !Utils.CheckInputPath(textBox2.Text))
             {
-                MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn !", "Thông báo");
+                MessageBox.Show("Chưa chọn file excel hoặc sai định dạng đường dẫn!!", "Thông báo người dùng");
                 return;
             }
-            else
-            {
-                FileStream fs = null;
-                try
-                {
-                    fs = new FileStream(textBox2.Text, FileMode.Open, FileAccess.Read);
-                }
-                catch (FileNotFoundException q)
-                {
-                    MessageBox.Show("File không tồn tại !", "Thông báo");
-                    return;
-                }
-                catch (IOException q)
-                {
-                    MessageBox.Show("File đang được mở bởi người dùng ! Vui lòng tắt file trước khi upload !", "Thông báo");
-                    return;
-                }
-            }
+
             {
                 ExcelExecution excelExecution = new ExcelExecution();
 
                 string EndCertDecoded = excelExecution.ImportExcel(textBox2.Text, 2);
                 string CertChainDecoded = excelExecution.ImportExcel(textBox2.Text, 3);
+                string[] signer = Utils.convertPEMtoArrayBase64(EndCertDecoded);
+                signer[0] = Utils.UsingRegexDeleteNewLine(signer[0]);
+                EndCertDecoded = signer[0];
+                if (EndCertDecoded == null || CertChainDecoded == null)
+                {
+                    return;
+                }
 
                 int level = Utils.CheckLevelOfCertificate(CertChainDecoded);
-
-                if (level == 0)    //Cert chain 1 layer
+                //Level 1
+                if (level == 0 || level == 1)
                 {
-                    this.CreateP12Level1(EndCertDecoded, CertChainDecoded);
-                }
-                else  //Cert chain 2 layer
-                {
-                    string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);     //Contain blank
+                    string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);   //Contain blank
                     int pos = 0;
                     string[] base64Chain_2 = new string[base64Chain.Length];
                     foreach (string s in base64Chain)
@@ -139,6 +133,22 @@ namespace DesktopApp
                         if (!Utils.isBlank(s))
                         {
                             base64Chain_2[pos] = s;
+                            pos++;
+                        }
+                    }
+                    this.CreateP12Level1(EndCertDecoded, base64Chain_2[0]);
+                    //this.CreateP12Level1(EndCertDecoded, CertChainDecoded);
+                }
+                else //Level 1
+                {
+                    string[] base64Chain = Utils.convertPEMtoArrayBase64(CertChainDecoded);   //Contain blank
+                    int pos = 0;
+                    string[] base64Chain_2 = new string[base64Chain.Length];
+                    foreach (string s in base64Chain)
+                    {
+                        if (!Utils.isBlank(s))
+                        {
+                            base64Chain_2[pos] = Utils.UsingRegexDeleteNewLine(s);
                             pos++;
                         }
                     }
@@ -166,48 +176,140 @@ namespace DesktopApp
 
         private void CreateP12Level1(string base64Cert, string base64Chain)
         {
-            GenerateP12 generateP12 = new GenerateP12();
-            ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
+            try
+            {
+                //Contructor
+                GenerateP12 generateP12 = new GenerateP12();
+                ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
 
-            X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
-            X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(base64Chain));
-            AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
-            RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
+                //Handle
+                X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
+                X509Certificate x509cert_2 = new X509Certificate(Convert.FromBase64String(base64Chain));
+                AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
+                AsymmetricCipherKeyPair privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
 
-            string passWord = Utils.CreatePassword(8);
-            generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
+                System.Security.Cryptography.X509Certificates.X509Certificate2 x509 = new System.Security.Cryptography.X509Certificates.X509Certificate2();
+                byte[] rawData = Encoding.ASCII.GetBytes(base64Cert);
+                x509.Import(rawData);
 
-            File.WriteAllText("file/passwordP12.txt", passWord);
-            MessageBox.Show("Cấp phát Keystore thành công !", "Thông báo");
+                string mark1 = "OID.";
+                string mark2 = "CN=";
+                string mark3 = "= CMND";
+                string subjectCert = x509.Subject;
+                string[] words = subjectCert.Split(',');
+                for (int i = 0; i < words.Length; i++)
+                {
+                    if (words[i].Contains(mark1))
+                    {
+                        string[] words_2 = words[i].Split('=');
+                        subjectMST = words_2[1].Replace(':', '-');
+                    }
+                    else if (words[i].Contains(mark2))
+                    {
+                        string[] words_2 = words[i].Split('=');
+                        subjectCN = words_2[1];
+                    }
+                }
+
+                string passWord = Utils.CreatePassword(8);
+                string filePath = "";
+                using (var fbd = new FolderBrowserDialog())
+                {
+                    DialogResult result = fbd.ShowDialog();
+
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                    {
+                        filePath = fbd.SelectedPath;
+                    }
+                }
+
+                generateP12.pkcs12Keystore(x509cert_1, x509cert_2, privatekey
+                    , filePath + "/" + subjectMST + "_" + passWord + ".p12"
+                    , subjectCN
+                    , passWord);
+
+                //File.WriteAllText("file/passwordP12.txt", passWord);
+                MessageBox.Show("Generate PKCS12 Keystore Successfully!", "Thông báo người dùng 1 cấp");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("File không thỏa điều kiện để sinh khóa!! (Dữ liệu lỗi)", "Thông báo người dùng");
+                return;
+            }
         }
 
         private void CreateP12LevelGT1(int level, string base64Cert, string[] base64Chain)
         {
-            GenerateP12 generateP12 = new GenerateP12();
-            ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
-
-            X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
-
-            //Create Array CertChain
-            List<X509Certificate> certChain = new List<X509Certificate>();
-            for (int i = 0; i < level; i++)
+            try
             {
-                if (base64Chain[i] == null)
+                //Contructor
+                GenerateP12 generateP12 = new GenerateP12();
+                ManageAlgorithm generateAlgorithm = new ManageAlgorithm();
+
+                //Handle
+                X509Certificate x509cert_1 = new X509Certificate(Convert.FromBase64String(base64Cert));
+
+                //Create Array CertChain
+                List<X509Certificate> certChain = new List<X509Certificate>();
+                for (int i = 0; i < level; i++)
                 {
-                    continue;
+                    if (base64Chain[i] == null)
+                        continue;
+                    String base64Chain_temp = Utils.UsingRegexDeleteNewLine(base64Chain[i]);
+                    X509Certificate temp = new X509Certificate(Convert.FromBase64String(base64Chain_temp));
+                    certChain.Add(temp);
                 }
-                X509Certificate temp = new X509Certificate(Convert.FromBase64String(base64Chain[i]));
-                certChain.Add(temp);
+                //Read from hidden file a get PrivateKey
+                AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
+                AsymmetricCipherKeyPair privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
+
+                System.Security.Cryptography.X509Certificates.X509Certificate2 x509 = new System.Security.Cryptography.X509Certificates.X509Certificate2();
+                byte[] rawData = Encoding.ASCII.GetBytes(base64Cert);
+                x509.Import(rawData);
+
+                string mark1 = "OID.";
+                string mark2 = "CN=";
+                string mark3 = "=CMND";
+                string subjectCert = x509.Subject;
+                string[] words = subjectCert.Split(',');
+                for (int i = 0; i < words.Length; i++)
+                {
+                    if (words[i].Contains(mark1))
+                    {
+                        string[] words_2 = words[i].Split('=');
+                        subjectMST = words_2[1].Replace(':', '-');
+                    }
+                    else if (words[i].Contains(mark2))
+                    {
+                        string[] words_2 = words[i].Split('=');
+                        subjectCN = words_2[1];
+                    }
+                }
+
+                string passWord = Utils.CreatePassword(8);
+                string filePath = "";
+                using (var fbd = new FolderBrowserDialog())
+                {
+                    DialogResult result = fbd.ShowDialog();
+                    if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                    {
+                        filePath = fbd.SelectedPath;
+                    }
+                }
+
+                generateP12.pkcs12Keystore(x509cert_1, certChain, privatekey.Private
+                , filePath + "/" + subjectMST + "_" + passWord + ".p12"
+                , subjectCN
+                , passWord);
+
+                //File.WriteAllText("file/passwordP12.txt", passWord);
+                MessageBox.Show("Generate PKCS12 Keystore Successfully!", "Thông báo người dùng");
             }
-            AsymmetricKeyParameter publicKey = x509cert_1.GetPublicKey();
-            RsaKeyParameters privatekey = generateAlgorithm.DecryptPrivateKey(publicKey);
-
-            string passWord = Utils.CreatePassword(8);
-            generateP12.pkcs12Keystore(x509cert_1, certChain, privatekey, "file/KeyStoreP12.p12", "TESTP12", passWord);
-
-            File.WriteAllText("file/passwordP12.txt", passWord);
-            MessageBox.Show("Cấp phát Keystore thành công !", "Thông báo");
-
+            catch (Exception e)
+            {
+                MessageBox.Show("File không thỏa điều kiện để sinh khóa!! (Dữ liệu lỗi)", "Thông báo người dùng");
+                return;
+            }
         }
     }
 }
